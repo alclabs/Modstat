@@ -1,0 +1,94 @@
+09/07/2010  21:50:58         CM: 5
+
+Device Instance: 0300305
+
+0 PRGs loaded.  0 PRGs running.
+
+Module status:
+Firmware sections validated in flash memory
+============================================
+  Boot16-H         - v2.08:003   Apr  3 2009
+  AAR DRIVER       - v2.24:013   Sep  3 2009
+
+Reset counters:
+    49 Power failures
+    81 Brownouts
+    61 Commanded warm boots
+   130 Commanded cold boots
+     0 System errors
+     0 Watchdog timeouts
+
+System error message history:                                   Type   Specific
+Warning message history:
+  Brownout protection activated.            08/23/10 17:14:52
+  Brownout protection activated.            08/23/10 17:13:34
+  Brownout protection activated.            08/23/10 17:12:36
+  Brownout protection activated.            08/23/10 17:11:37
+  Brownout protection activated.            08/23/10 17:10:36
+  Brownout protection activated.            08/19/10 22:15:41
+  Brownout protection activated.            08/19/10 22:14:57
+  Brownout protection activated.            08/19/10 22:13:51
+  Brownout protection activated.            08/19/10 22:13:16
+  Brownout protection activated.            07/23/10 21:05:08
+Information message history:
+  Clock changed from 09/04/10 00:31:44 to   09/04/10 00:31:13
+  Software clock changed to                 09/04/10 00:30:31
+  Clock changed from 08/24/10 04:13:34 to   08/24/10 04:13:01
+  Clock changed from 08/23/10 17:18:45 to   08/24/10 02:40:46
+  Power restored after power failure.       08/23/10 17:15:32
+  FLASH: Programmed 8192 bytes at 0x26000   09/04/09 15:33:18
+  FLASH: Programmed 8192 bytes at 0x24000   09/04/09 15:33:17
+  FLASH: Programmed 8192 bytes at 0x22000   09/04/09 15:33:16
+  FLASH: Programmed 8192 bytes at 0x20000   09/04/09 15:33:15
+  MAIN FIRMWARE ERASED ON COMMAND!          09/04/09 15:33:12
+
+ARC156 reconfigurations during the last hour (cleared upon reset):
+   Total ....................... 12
+   Initiated by this node ...... 0
+
+Secondary ARC156 reconfigurations during the last hour (cleared upon reset):
+   Total ....................... 0
+   Initiated by this node ...... 0
+
+BACnet comm errors in the last 7 days (cleared by format):    Incoming Outgoing
+  Network layer                             08/23/10 17:11:51        0       91
+  ARC156 data link                          08/23/10 17:15:46        3        1
+  BACnet data link                          08/23/10 17:16:03        2     1585
+
+Core board hardware: 
+  Type=121, board=34, manufactured on 03/16/2004, S/N AAR
+  RAM: 1024 kBytes;    FLASH: 1024 kBytes, type = 3
+Base board hardware: 
+  Type=121, board=49, manufactured on 03/16/2004, S/N AAR4
+
+Largest free heap space = 98304.
+
+Database size = 774562 , used = 61554, free = 713008.
+
+Raw physical switches: 0x05300000
+
+Secondary ARC156 cumulative diagnostics since last reset:
+  Rx READY
+  Tx READY
+  SlaveResets=1
+  RxCmd=1599480
+  TxCmd=1679830
+  OverrunErrors=8
+  ParityErrors=0
+  FramingErrors=4
+  SlaveNotReadyRx=0
+  SlaveNotReadyTx=43
+  SlaveTimeoutTx=9
+  SlaveCTSWaitTx=323937
+  BadLlc=0
+  BadSAP=0
+  BadServicePrimitive=0
+  NoPacketErrors=1015
+  UpQueueErrors=0
+  DownQueueErrors=0
+  RxCmdQueueErrors=22
+  PowerOnResets=2
+  ExcessiveNaks=0
+  Reconfigs=3
+  ReconfigsThisNode=1
+

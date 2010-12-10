@@ -1,0 +1,82 @@
+09/07/2010  21:37:58         CM: 1
+
+Device Instance: 0300201
+
+2 PRGs loaded.  2 PRGs running.
+
+Module status:
+Firmware sections validated in flash memory
+============================================
+  Boot16-E         - v4.01:001   Jun 19 2007
+  LGRME2M DRIVER   - v2.24:013   Sep  3 2009
+
+Reset counters:
+    18 Power failures
+     5 Brownouts
+    35 Commanded warm boots
+    22 Commanded cold boots
+     0 System errors
+    13 Watchdog timeouts
+     0 CPU clock failures
+
+System error message history:                                   Type   Specific
+Warning message history:
+Information message history:
+  Power restored after power failure.       09/07/10 09:15:40
+  Clock changed from 08/24/10 04:13:34 to   08/24/10 04:13:01
+  Clock changed from 08/18/10 00:32:33 to   08/18/10 00:32:02
+  Software clock changed to                 08/18/10 00:30:31
+  RESET: BACnet reinitialize warmstart      08/02/10 11:10:25
+  RESET: BACnet reinitialize warmstart      08/02/10 09:51:36
+
+ARC156 reconfigurations during the last hour (cleared upon reset):
+   Total ....................... 0
+   Initiated by this node ...... 0
+
+BACnet comm errors in the last 7 days (cleared by format):    Incoming Outgoing
+  ARC156 data link                          09/07/10 09:15:57        0       13
+
+Main board hardware: 
+  Type=69, board=4, manufactured on 02/23/2001, S/N LME120010N
+  RAM: 2048 kBytes;    FLASH: 1024 kBytes, type = 1
+
+Largest free heap space = 19456.
+
+Database size = 1524138 , used = 213698, free = 1310440.
+
+Raw physical switches: 0x2488000
+
+Network Information:
+  Ethernet MAC address  = 00-E0-C9-00-14-E5
+  Current IP Address    = 172.16.12.18
+  Current Subnet Mask   = 255.255.0.0
+  Current Gateway Addr  = 172.16.0.3
+  Assigned IP Address   = 172.16.12.18
+  Assigned Subnet Mask  = 255.255.0.0
+  Assigned Gateway Addr = 172.16.0.3
+Ethernet statistics:
+  Total frames received    = 784490
+  Total frames transmitted = 71945
+  Tx deferred A            = 0
+  Tx deferred B            = 0
+  Tx aborts: Out-of-window = 0
+  Tx aborts: Jabber        = 0
+  Tx aborts: 16 collisions = 79
+  Tx aborts: Underrun      = 0
+  Tx cleanups type A       = 0
+  Tx cleanups type B       = 0
+  Tx cleanups type D       = 0
+  Tx cleanups type E       = 0
+  Tx no chip memory A      = 0
+  Tx no chip memory B      = 0
+  Tx no chip memory C      = 0
+  Tx chip memory now ready = 0
+  Rx smaller than 64 bytes = 0
+  Rx larger than 1518 bytes= 0
+  Rx no buffer errors      = 0
+  Rx alignment errors      = 0
+  Rx CRC errors            = 0
+  Rx dribble errors        = 0
+  Receptions missed        = 81
+
+

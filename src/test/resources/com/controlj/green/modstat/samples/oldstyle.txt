@@ -1,0 +1,90 @@
+09/07/2010  21:37:58         CM: 1
+
+Device Instance: 0300201
+
+5 PRGs loaded.  4 PRGs running.
+
+Module status:
+Firmware sections validated in flash memory
+============================================
+  Boot16-E         - v4.01:001   Jun 19 2007
+  LGRME2M DRIVER   - v2.24:013   Sep  3 2009
+
+Reset counters:
+    18 Power failures
+     5 Brownouts
+    35 Commanded warm boots
+    22 Commanded cold boots
+     0 System errors
+    13 Watchdog timeouts
+     0 CPU clock failures
+
+System error message history:                                   Type   Specific
+  EEPROM2: Read error at address 0x00       08/23/10 22:44:59 00014001 00000000
+  Yet another important warning 08/22/11    08/23/10 23:45:00 00014001 00000000
+Warning message history:
+  Main firmware not found at startup.       08/24/10 08:22:47
+  Brownout protection activated.            --/--/-- --:--:--
+Information message history:
+  Power restored after power failure.       09/07/10 09:15:40
+  Clock changed from 08/24/10 04:13:34 to   08/24/10 04:13:01
+  Software clock changed to                 08/18/10 00:30:31
+  RESET: BACnet reinitialize warmstart      08/02/10 11:10:25
+
+ARC156 reconfigurations during the last hour (cleared upon reset):
+   Total ....................... 3
+   Initiated by this node ...... 1
+
+Secondary ARC156 reconfigurations during the last hour (cleared upon reset):
+  Total ....................... 1
+  Initiated by this node ...... 0
+
+BACnet comm errors in the last 7 days (cleared by format):    Incoming Outgoing
+  ARC156 data link                          09/07/10 09:15:57        0       13
+
+Core board hardware:
+  Type=0, board=1, manufactured on 09/28/2000, S/N CR6090003T
+  RAM: 2048 kBytes;    FLASH: 1024 kBytes, type = 1
+Base board hardware:
+  Type=93, board=3, manufactured on 09/28/2000, S/N U32090024N
+
+Free heap space = 271500.
+
+Database size = 1524138 , used = 213698, free = 1310440.
+
+Raw physical switches: 0x2488000
+
+Network Information:
+  Ethernet MAC address  = 00-E0-C9-00-14-E5
+  Current IP Address    = 172.16.12.18
+  Current Subnet Mask   = 255.255.0.0
+  Current Gateway Addr  = 172.16.0.3
+  Assigned IP Address   = 172.16.12.18
+  Assigned Subnet Mask  = 255.255.0.0
+  Assigned Gateway Addr = 172.16.0.3
+Ethernet statistics:
+  Total frames received    = 784490
+  Total frames transmitted = 71945
+  Tx deferred A            = 0
+  Tx deferred B            = 0
+  Tx aborts: Out-of-window = 0
+  Tx aborts: Jabber        = 0
+  Tx aborts: 16 collisions = 79
+  Tx aborts: Underrun      = 0
+  Tx cleanups type A       = 0
+  Tx cleanups type B       = 0
+  Tx cleanups type D       = 0
+  Tx cleanups type E       = 0
+  Tx no chip memory A      = 0
+  Tx no chip memory B      = 0
+  Tx no chip memory C      = 0
+  Tx chip memory now ready = 0
+  Rx smaller than 64 bytes = 0
+  Rx larger than 1518 bytes= 0
+  Rx no buffer errors      = 0
+  Rx alignment errors      = 0
+  Rx CRC errors            = 0
+  Rx dribble errors        = 0
+  Receptions missed        = 81
+
+

@@ -1,0 +1,96 @@
+09/07/2010  21:44:29         CM: 1
+
+Device Instance: 0300701
+
+0 PRGs loaded.  0 PRGs running.
+
+Module status:
+Firmware sections validated in flash memory
+============================================
+  Boot16-E         - v4.01:001   Jun 19 2007
+  LGE DRIVER       - v2.24:013   Sep  3 2009
+
+Reset counters:
+    13 Power failures
+     1 Brownouts
+   151 Commanded warm boots
+    52 Commanded cold boots
+    17 System errors
+    30 Watchdog timeouts
+     0 CPU clock failures
+
+System error message history:                                   Type   Specific
+  CPU: Watchdog timeout caused reset.       06/18/10 16:43:26 000D0000 00000080
+  CPU: Watchdog timeout caused reset.       06/18/10 16:42:49 000D0000 00000080
+  CPU: Watchdog timeout caused reset.       06/18/10 16:42:11 000D0000 00000080
+Warning message history:
+  Halted due to frequent system errors.     06/18/10 16:43:29
+Information message history:
+  Clock changed from 08/24/10 04:13:34 to   08/24/10 04:13:01
+  Clock changed from 08/24/10 02:35:58 to   08/24/10 02:36:38
+  Clock changed from 08/12/10 11:19:43 to   08/12/10 10:20:02
+  Clock changed from 08/12/10 10:17:11 to   08/12/10 11:17:11
+  RESET: BACnet reinitialize warmstart      08/12/10 10:17:24
+  FLASH: Programmed 8192 bytes at 0x26000   09/04/09 23:04:21
+  FLASH: Programmed 8192 bytes at 0x24000   09/04/09 23:04:21
+  FLASH: Programmed 8192 bytes at 0x22000   09/04/09 23:04:21
+  FLASH: Programmed 8192 bytes at 0x20000   09/04/09 23:04:20
+  MAIN FIRMWARE ERASED ON COMMAND!          09/04/09 23:04:17
+
+ARC156 reconfigurations during the last hour (cleared upon reset):
+   Total ....................... 0
+   Initiated by this node ...... 0
+
+BACnet comm errors in the last 7 days (cleared by format):    Incoming Outgoing
+  Ethernet data link                        06/21/10 14:08:51    43827        0
+  ARC156 data link                          08/12/10 10:17:06        0        1
+
+Main board hardware: 
+  Type=70, board=18, manufactured on 05/20/1999, S/N TRAE'S-LGE
+  RAM: 1024 kBytes;    FLASH: 1024 kBytes, type = 1
+
+Largest free heap space = 22528.
+
+Database size = 475562 , used = 93842, free = 381720.
+
+Raw physical switches: 0x1600000
+
+Network Information:
+  Ethernet MAC address  = 00-E0-C9-00-05-76
+  Current IP Address    = 172.16.12.28
+  Current Subnet Mask   = 255.255.0.0
+  Current Gateway Addr  = 172.16.100.110
+  Assigned IP Address   = 172.16.12.28
+  Assigned Subnet Mask  = 255.255.0.0
+  Assigned Gateway Addr = 172.16.100.110
+Ethernet statistics:
+  Total frames received    = 30952383
+  Total frames transmitted = 282192
+  Tx deferred A            = 0
+  Tx deferred B            = 0
+  Tx aborts: Out-of-window = 0
+  Tx aborts: Jabber        = 0
+  Tx aborts: 16 collisions = 147
+  Tx aborts: Underrun      = 0
+  Tx cleanups type A       = 0
+  Tx cleanups type B       = 0
+  Tx cleanups type D       = 0
+  Tx cleanups type E       = 0
+  Tx no chip memory A      = 0
+  Tx no chip memory B      = 0
+  Tx no chip memory C      = 0
+  Tx chip memory now ready = 0
+  Rx smaller than 64 bytes = 0
+  Rx larger than 1518 bytes= 0
+  Rx no buffer errors      = 0
+  Rx alignment errors      = 0
+  Rx CRC errors            = 0
+  Rx dribble errors        = 0
+  Receptions missed        = 2002
+
+Secondary ARC156 cumulative diagnostics since last reset:
+  Rx READY
+  Tx READY
+  SlaveResets=1
+  RxCmd=1599480
+  TxCmd=1679830

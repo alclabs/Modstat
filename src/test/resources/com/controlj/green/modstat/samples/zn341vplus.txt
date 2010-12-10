@@ -1,0 +1,57 @@
+09/07/2010  21:39:28         CM: 6
+
+Device Instance: 0300206
+
+1 PRGs loaded.  1 PRGs running.
+
+Module status:
+Firmware sections validated in flash memory
+============================================
+  Boot16-H         - v2.08:003   Apr  3 2009
+  ZN PLUS          - v2.24:013   Sep  3 2009
+
+Reset counters:
+    36 Power failures
+     7 Brownouts
+   112 Commanded warm boots
+   183 Commanded cold boots
+     0 System errors
+     0 Watchdog timeouts
+
+System error message history:                                   Type   Specific
+Warning message history:
+  Brownout protection activated.            --/--/-- --:--:--
+  Brownout protection activated.            --/--/-- --:--:--
+  Brownout protection activated.            --/--/-- --:--:--
+Information message history:
+  Clock changed from 08/24/10 04:13:34 to   08/24/10 04:13:01
+  Clock changed from 06/12/02 10:00:00 to   08/24/10 02:31:37
+  Current ASIC v.0 OTP:  79 128 0           06/12/02 10:00:00
+  Power restored after power failure.       --/--/-- --:--:--
+  Clock changed from 08/18/10 00:35:08 to   08/18/10 00:34:37
+  FLASH: Programmed 8192 bytes at 0x24000   --/--/-- --:--:--
+  FLASH: Programmed 8192 bytes at 0x22000   --/--/-- --:--:--
+  FLASH: Programmed 8192 bytes at 0x20000   --/--/-- --:--:--
+  MAIN FIRMWARE ERASED ON COMMAND!          --/--/-- --:--:--
+  Current ASIC v.0 OTP:  79 128 0           12/31/79 00:00:00
+
+ARC156 reconfigurations during the last hour (cleared upon reset):
+   Total ....................... 0
+   Initiated by this node ...... 0
+
+BACnet comm errors in the last 7 days (cleared by format):    Incoming Outgoing
+  ARC156 data link                          06/12/02 10:00:00        0        5
+
+Core board hardware: 
+  Type=112, board=34, manufactured on 02/09/2004, S/N 21Z3C0407N
+  RAM: 512 kBytes;    FLASH: 1024 kBytes, type = 3
+Base board hardware: 
+  Type=112, board=45, manufactured on 02/13/2004, S/N ZN34108
+
+Largest free heap space = 16384.
+
+Database size = 335274 , used = 136518, free = 198756.
+
+Raw physical switches: 0x06300000
+
+

@@ -1,0 +1,58 @@
+09/07/2010  21:43:27         CM: 9
+
+Device Instance: 0300209
+
+0 PRGs loaded.  0 PRGs running.
+
+Module status:
+Firmware sections validated in flash memory
+============================================
+  Boot16-H_IAR     - v2.09:015   May 19 2009
+  AMR DRIVER       - v3.03:039   Jun 29 2009
+
+Reset counters:
+     4 Power failures
+     0 Brownouts
+     0 Commanded warm boots
+     3 Commanded cold boots
+     0 System errors
+     0 Watchdog timeouts
+
+System error message history:                                   Type   Specific
+Warning message history:
+  Main firmware not found at startup.       07/26/10 09:41:36
+  Main firmware not found at startup.       07/23/10 20:04:55
+  Main firmware not found at startup.       07/23/10 20:03:01
+Information message history:
+  Clock changed from 08/24/10 04:13:34 to   08/24/10 04:13:01
+  Power restored after power failure.       08/24/10 02:31:25
+  Software clock changed to                 08/23/10 00:30:33
+  Software clock changed to                 08/22/10 00:30:32
+  Power restored after power failure.       08/06/10 16:35:07
+  MAIN FIRMWARE ERASED ON COMMAND!          07/26/10 09:42:40
+  Power restored after power failure.       07/23/10 20:04:55
+  Power restored after power failure.       07/23/10 20:03:00
+  Reset counters cleared.                   07/23/10 20:03:00
+  Message log cleared.                      07/23/10 20:03:00
+
+ARC156 reconfigurations during the last hour (cleared upon reset):
+   Total ....................... 0
+   Initiated by this node ...... 0
+
+BACnet comm errors in the last 7 days (cleared by format):    Incoming Outgoing
+  ARC156 data link                          08/18/10 15:37:48        0      232
+  MS/TP data link                           08/24/10 02:31:42        1        0
+
+Core board hardware: 
+  Type=168, board=74, manufactured on 08/17/2009, S/N 21C951608N
+  RAM: 1024 kBytes;    FLASH: 4096 kBytes, type = 6
+Base board hardware: 
+  Type=168, board=48, manufactured on 08/17/2009, S/N AMR970030N
+
+Largest free heap space = 53248.
+
+Database size = 588496 , used = 61268, free = 527228.
+
+Raw physical switches: 0x09250000
+
+

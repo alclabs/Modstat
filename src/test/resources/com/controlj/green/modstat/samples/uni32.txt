@@ -1,0 +1,55 @@
+09/07/2010  21:48:37         CM: 2
+
+Device Instance: 0300302
+
+22 PRGs loaded.  22 PRGs running.
+
+Module status:
+Firmware sections validated in flash memory
+============================================
+  Boot16           - v4.01:001   Jun 19 2007
+  UNI32 DRIVER     - v2.24:013   Sep 03 2009
+
+Reset counters:
+    53 Power failures
+     1 Brownouts
+   474 Commanded warm boots
+    75 Commanded cold boots
+     0 System errors
+     8 Watchdog timeouts
+     0 CPU clock failures
+
+System error message history:                                   Type   Specific
+Warning message history:
+  NE: routing table exceeded.               08/27/10 12:14:35
+Information message history:
+  Clock changed from 08/24/10 04:13:34 to   08/24/10 04:13:01
+  Clock changed from 08/24/10 02:40:14 to   08/24/10 02:40:46
+  Power restored after power failure.       08/24/10 02:32:49
+  RESET: BACnet reinitialize warmstart      08/20/10 11:22:47
+
+ARC156 reconfigurations during the last hour (cleared upon reset):
+   Total ....................... 13
+   Initiated by this node ...... 0
+
+Secondary ARC156 reconfigurations during the last hour (cleared upon reset):
+   Total ....................... 0
+   Initiated by this node ...... 0
+
+BACnet comm errors in the last 7 days (cleared by format):    Incoming Outgoing
+  ARC156 data link                          08/24/10 02:33:31        0        2
+  MS/TP data link                           08/26/10 14:48:06        0        8
+
+Core board hardware: 
+  Type=0, board=1, manufactured on 09/28/2000, S/N CR6090003T
+  RAM: 2048 kBytes;    FLASH: 1024 kBytes, type = 1
+Base board hardware: 
+  Type=93, board=3, manufactured on 09/28/2000, S/N U32090024N
+
+Largest free heap space = 18432.
+
+Database size = 1701846 , used = 1634410, free = 67436.
+
+Raw physical switches: 0x2000000
+
+

@@ -1,0 +1,266 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+        "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+    <title>Modstat formatting</title>
+    <style type="text/css">
+        .todo {
+            background-color: #ee0;
+        }
+
+        pre {
+            border: solid #DDD 1px;
+        }
+    </style>
+
+</head>
+<body>
+<h1>Disclaimer</h1>
+<p>These are Steve Appling's own observations about modstat formats, not information from the firmware team, so take it
+with a grain of salt.</p>
+<p>Currently this only covers ExecB modstats, not older legacy ones.</p>
+
+<h2>CMnet Modstats</h2>
+<p>I'm not sure if there is a consistent format to parse - need to investigate this.
+The ones I retrieved from our building all started with at least one blank line (some had two)
+The next line started with CM address:</p>
+<pre>
+
+
+CM 7 ($07)		09:50 Thu 09/16/10	Type ZLM
+</pre>
+<p>or</p>
+<pre>
+
+    L2M:  CM 1 ($01)      Time: 09:49:37 Thursday Sep-16-2010
+</pre>
+
+
+<h2>ExecB Sections</h2>
+<p>The following sections are roughly in this order, but not all modstats will have all sections.</p>
+
+<h3>Time</h3>
+<pre>
+09/16/2010  09:49:09         CM: 1
+</pre>
+<p>This is the date/time when the modstat was retrieved.</p>
+<p class="todo">I think the CM is the address on Arcnet/mstp. Need to confirm this.</p>
+
+<h3>Device Instance</h3>
+<pre>
+Device Instance: 0300303
+</pre>
+
+<h3>Downloaded By</h3>
+<pre>
+Downloaded by: WebCTRL Server 09/15/10 13:58 Mark Evans - 172.16.200.32:0xbac2
+</pre>
+
+<h3>Application Software Version</h3>
+<pre>
+Application Software Version: PRG:in_heat_req
+</pre>
+
+<h3>Flash Archive Status</h3>
+<pre>
+Flash Archive Status: Valid on 09/15/10 14:05:21
+</pre>
+
+<h3>Programs Loaded</h3>
+<p>There seem to be two styles of this.  The older style is:</p>
+<pre>
+1 PRGs loaded.  1 PRGs running.
+</pre>
+<p>The newer style is:</p>
+<pre>
+1 PRGs initialized.  1 PRGs running.
+</pre>
+
+<h3>Firmware Sections</h3>
+<p>There seem to be two styles of this.  The older style is:</p>
+<pre>
+Module status:
+Firmware sections validated in flash memory
+============================================
+  Boot16-H_IAR     - v2.09:015   May 19 2009
+  AMR DRIVER       - v3.03:039   Jun 29 2009
+</pre>
+<p>The newer style is:</p>
+<pre>
+Module status:
+Firmware sections in flash memory
+============================================
+  ME-LGR-vanilla   - v4.01:298   Sep 08 2010
+</pre>
+<p>Note the "validated" word.  The Boot version doesn't seem to be
+listed in all the newer modstats.</p>
+
+<h3>Reset counters</h3>
+<pre>
+Reset counters:
+     4 Power failures
+     0 Brownouts
+     0 Commanded warm boots
+     3 Commanded cold boots
+     0 System errors
+     0 Watchdog timeouts
+</pre>
+
+<h3>Error Messages</h3>
+<pre>
+System error message history:                                   Type   Specific
+  Unhandled interrupt error #16             09/15/10 16:39:09 00020004 00000000
+</pre>
+
+<h3>Warning Messages</h3>
+<pre>
+Warning message history:
+  Main firmware not found at startup.       08/24/10 08:22:47
+  Brownout protection activated.            --/--/-- --:--:--
+</pre>
+<p>Note that messages from modules without a real time clock (Z series) may not know the time when some messages
+are logged.  They get the "--" format time stamps.</p>
+
+<h3>Information Messages</h3>
+<pre>
+Information message history:
+  Clock changed from 08/24/10 08:25:18 to   08/24/10 08:24:36
+</pre>
+
+<h3>ARC156 Reconfigs</h3>
+<pre>
+ARC156 reconfigurations during the last hour (cleared upon reset):
+   Total ....................... 14
+   Initiated by this node ...... 0
+</pre>
+
+<h3>Secondary ARC156 Reconfigs</h3>
+<pre>
+Secondary ARC156 reconfigurations during the last hour (cleared upon reset):
+   Total ....................... 0
+   Initiated by this node ...... 0
+</pre>
+
+<h3>BACnet Comm Errors</h3>
+<pre>
+BACnet comm errors in the last 7 days (cleared by format):    Incoming Outgoing
+  ARC156 data link                          09/15/10 16:56:03        0        6
+</pre>
+<p class="todo">
+    Don't know how many or the format of other possible data link lines.  I have only seen one line under this
+    section, even though the module had multiple data links.
+</p>
+
+<h3>Hardware Versions</h3>
+<p>The modstat either has a single Main board section:</p>
+<pre>
+Main board hardware:
+  Type=84, board=7, manufactured on 06/15/2000, S/N S40055120N
+  RAM: 512 kBytes;    FLASH: 512 kBytes, type = 2
+</pre>
+<p> or it has both a Core board and a Base board section:</p>
+<pre>
+Core board hardware:
+  Type=168, board=74, manufactured on 08/17/2009, S/N 21C951608N
+  RAM: 1024 kBytes;    FLASH: 4096 kBytes, type = 6
+Base board hardware:
+  Type=168, board=48, manufactured on 08/17/2009, S/N AMR970030N
+</pre>
+
+<h3>Heap Space</h3>
+<p>Most common style:</p>
+<pre>
+Largest free heap space = 19456.
+</pre>
+<p>another style:</p>
+<pre>
+Free heap space = 12903.
+</pre>
+
+<h3>Database size</h3>
+<pre>
+Database size = 368274 , used = 185994, free = 182280.
+</pre>
+
+<h3>Flash Storage</h3>
+<pre>
+Flash storage size = 458752
+  File storage size = 458752 (max = 458752), used = 6320, free = 452432
+</pre>
+
+<h3>Switches</h3>
+<pre>
+Raw physical switches: 0x3008000
+</pre>
+
+<h3>Network Information</h3>
+<pre>
+Network Information:
+  Ethernet MAC address  = 00-E0-C9-00-05-76
+  Current IP Address    = 172.16.12.28
+  Current Subnet Mask   = 255.255.0.0
+  Current Gateway Addr  = 172.16.100.110
+  Assigned IP Address   = 172.16.12.28
+  Assigned Subnet Mask  = 255.255.0.0
+  Assigned Gateway Addr = 172.16.100.110
+</pre>
+
+<h3>Ethernet Statistics</h3>
+<pre>
+Ethernet statistics:
+  Total frames received    = 30952383
+  Total frames transmitted = 282192
+  Tx deferred A            = 0
+  Tx deferred B            = 0
+  Tx aborts: Out-of-window = 0
+  Tx aborts: Jabber        = 0
+  Tx aborts: 16 collisions = 147
+  Tx aborts: Underrun      = 0
+  Tx cleanups type A       = 0
+  Tx cleanups type B       = 0
+  Tx cleanups type D       = 0
+  Tx cleanups type E       = 0
+  Tx no chip memory A      = 0
+  Tx no chip memory B      = 0
+  Tx no chip memory C      = 0
+  Tx chip memory now ready = 0
+  Rx smaller than 64 bytes = 0
+  Rx larger than 1518 bytes= 0
+  Rx no buffer errors      = 0
+  Rx alignment errors      = 0
+  Rx CRC errors            = 0
+  Rx dribble errors        = 0
+  Receptions missed        = 2002
+</pre>
+
+<h3>Arcnet Diagnostics</h3>
+<pre>
+Secondary ARC156 cumulative diagnostics since last reset:
+  Rx READY
+  Tx READY
+  SlaveResets=1
+  RxCmd=254912
+  TxCmd=290061
+  OverrunErrors=2
+  ParityErrors=0
+  FramingErrors=0
+  SlaveNotReadyRx=1
+  SlaveNotReadyTx=28
+  SlaveTimeoutTx=8
+  SlaveCTSWaitTx=255461
+  BadLlc=0
+  BadSAP=0
+  BadServicePrimitive=0
+  NoPacketErrors=495
+  UpQueueErrors=0
+  DownQueueErrors=0
+  RxCmdQueueErrors=11
+  PowerOnResets=2
+  ExcessiveNaks=5
+  Reconfigs=13
+  ReconfigsThisNode=1
+</pre>
+<p>I think this is only on the AAR.</p>
+</body>
+
+</html>

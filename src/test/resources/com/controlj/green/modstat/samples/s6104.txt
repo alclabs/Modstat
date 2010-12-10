@@ -1,0 +1,66 @@
+09/07/2010  21:46:11         CM: 3
+
+Device Instance: 0300303
+
+1 PRGs loaded.  1 PRGs running.
+
+Module status:
+Firmware sections validated in flash memory
+============================================
+  Boot8            - v4.01:001   Jun 19 2007
+  S6104 DRIVER     - v2.24:013   Sep 03 2009
+
+Reset counters:
+    41 Power failures
+    61 Brownouts
+     1 Commanded warm boots
+     2 Commanded cold boots
+     0 System errors
+     0 Watchdog timeouts
+     0 CPU clock failures
+
+System error message history:                                   Type   Specific
+  EEPROM2: Read error at address 0x00       08/23/10 22:44:59 00014001 00000000
+  EEPROM1: Read error at address 0x00       08/23/10 22:44:59 00014002 00000000
+  EEPROM2: Read error at address 0x00       08/23/10 20:06:46 00014001 00000000
+  EEPROM1: Read error at address 0x00       08/23/10 20:06:46 00014001 00000000
+  EEPROM2: Read error at address 0x00       08/23/10 19:54:16 00014001 00000000
+  EEPROM2: Read error at address 0x00       08/23/10 19:47:09 00014001 00000000
+Warning message history:
+  Main firmware not found at startup.       08/24/10 08:22:47
+  Main firmware not found at startup.       08/24/10 02:37:53
+  Main firmware not found at startup.       08/23/10 22:45:00
+  Main firmware not found at startup.       08/23/10 22:20:50
+  Brownout protection activated.            08/23/10 22:20:49
+  Brownout protection activated.            08/23/10 19:45:04
+  Main firmware not found at startup.       08/23/10 19:44:06
+  Brownout protection activated.            08/23/10 19:44:05
+  Main firmware not found at startup.       08/23/10 19:42:21
+  Main firmware not found at startup.       08/23/10 19:41:08
+Information message history:
+  Clock changed from 08/24/10 08:25:18 to   08/24/10 08:24:36
+  RESET: BACnet reinitialize warmstart      08/24/10 08:24:57
+  Module formatted. PRG database cleared.   08/24/10 08:24:27
+  FLASH: Programmed 6632 bytes at 0x62000   08/24/10 08:24:23
+  FLASH: Programmed 8192 bytes at 0x60000   08/24/10 08:24:22
+  Power restored after power failure.       08/23/10 19:47:09
+  Power restored after power failure.       08/23/10 19:44:46
+  Power restored after power failure.       08/23/10 19:43:38
+  Power restored after power failure.       08/23/10 19:42:21
+  Power restored after power failure.       08/23/10 19:41:08
+
+ARC156 reconfigurations during the last hour (cleared upon reset):
+   Total ....................... 14
+   Initiated by this node ...... 0
+
+Main board hardware: 
+  Type=84, board=7, manufactured on 06/15/2000, S/N S40055120N
+  RAM: 512 kBytes;    FLASH: 512 kBytes, type = 2
+
+Largest free heap space = 19456.
+
+Database size = 368274 , used = 185994, free = 182280.
+
+Raw physical switches: 0x3008000
+
+
