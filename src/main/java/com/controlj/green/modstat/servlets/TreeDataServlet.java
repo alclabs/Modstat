@@ -86,7 +86,9 @@ public class TreeDataServlet extends HttpServlet {
                         next.put("hideCheckbox", false);
 
                         if (!child.getChildren().isEmpty()) {
-                            next.put("isLazy", true);
+                            if ((child.getType() != LocationType.Device) || (child.getChildren().size() != 1)) {
+                                next.put("isLazy", true);
+                            }
                         }
 
                         next.put("icon", getIconForType(child.getType()));
