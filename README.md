@@ -2,7 +2,7 @@ Purpose
 =======
 
 The Modstat Add-On to WebCTRL gathers module status reports from all the controllers beneath
-the selected location in the tree and parses them. It provides checks for a range to problems
+the selected location in the tree and parses them. It provides checks for a range of problems
 including:
 
 * No Communications
@@ -23,18 +23,9 @@ Project Status
 While this initial checkin is functional, it needs some work to be ready for real production use.
 Outstanding issues:
 
-* Move download and error check functionality to a single page.  
-  Use a single tree control to pick the scope and allow download or report running from
-  beneath the selected scope.
-* Make checks optional  
-  Currently all the error checks are run every time.  We need a configuration page to turn
-  checks on and off.
-* Parameterize error checks  
-  Some checks have options or limit values that are currently hard-coded. These need to be
-  parameterized in a way
-  that allows the infra-structure to generate the UI.  This is an experiment that will
-  hopefully lead to a more pluggable reporting framework for add-ons to contribute to WebCTRL
-  reports.
+* Allow canceling while gathering downloads
+* Add some more checks
+* Tree window layout for IE
 * Make checks really pluggable.  
 
 Support and Other Downloads
