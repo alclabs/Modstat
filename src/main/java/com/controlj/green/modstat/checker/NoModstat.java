@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Automated Logic Corporation
+ * Copyright (c) 2011 Automated Logic Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NoModstat extends BaseChecker {
-    public NoModstat() {
+    public NoModstat(String id) {
+        super(id);
         name = "No Communications";
         description = "Lists modules that would not respond to modstat request.";
     }

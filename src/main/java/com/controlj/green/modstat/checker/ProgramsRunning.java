@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Automated Logic Corporation
+ * Copyright (c) 2011 Automated Logic Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -29,7 +29,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ProgramsRunning extends BaseChecker {
-    public ProgramsRunning() {
+    public ProgramsRunning(String id) {
+        super(id);
         name = "All Programs Running";
         description = "Checks that all loaded programs (GFBs) are running.";
     }
@@ -44,7 +45,7 @@ public class ProgramsRunning extends BaseChecker {
 
             if (loaded != running) {
                 result = new ArrayList<ReportRow>();
-                result.add(ReportRow.error("Only "+running+" out of "+loaded+" program(s) are running."));
+                result.add(ReportRow.error("Out of "+loaded+" program(s), "+ (loaded - running)+" are not running."));
             }
         }
         return result;

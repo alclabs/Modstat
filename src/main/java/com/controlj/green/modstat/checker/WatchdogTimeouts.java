@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Automated Logic Corporation
+ * Copyright (c) 2011 Automated Logic Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,8 @@ import java.util.List;
 import java.util.Map;
 
 public class WatchdogTimeouts extends BaseChecker {
-    public WatchdogTimeouts() {
+    public WatchdogTimeouts(String id) {
+        super(id);
         name = "Watchdog Timeout";
         description = "Checks for any watchdog timeouts since last module format.";
     }

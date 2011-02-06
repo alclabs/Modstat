@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Automated Logic Corporation
+ * Copyright (c) 2011 Automated Logic Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,15 +24,53 @@ package com.controlj.green.modstat.checker;
 
 import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.checks.ReportRow;
+import org.jetbrains.annotations.NotNull;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ArcnetReconfig extends BaseChecker {
-    public ArcnetReconfig() {
+    public static final String FIELD_ERROR_LIMIT = "error";
+    public static final String FIELD_WARN_LIMIT = "warn";
+
+    private int errorLimit = 5;
+    private int warningLimit = 1;
+
+
+    public ArcnetReconfig(String id) {
+        super(id);
         name        = "Arcnet Reconfigs";
         description = "Checks for too many Arcnet reconfigurations in the last hour.";
+        fieldNames.addAll(Arrays.asList(FIELD_ERROR_LIMIT, FIELD_WARN_LIMIT));
+    }
+
+    @Override @NotNull public String getFieldValue(String fieldName) throws InvalidFieldNameException {
+        if (FIELD_ERROR_LIMIT.equals(fieldName)) {
+            return Integer.toString(errorLimit);
+        } else if (FIELD_WARN_LIMIT.equals(fieldName)) {
+            return Integer.toString(warningLimit);
+        }
+        return super.getFieldValue(fieldName);
+    }
+
+
+    @Override
+    public void setFieldValue(String fieldName, String value) throws InvalidFieldValueException, InvalidFieldNameException {
+        if (FIELD_ERROR_LIMIT.equals(fieldName)) {
+            errorLimit = intValueFromString(value);
+        } else if (FIELD_WARN_LIMIT.equals(fieldName)) {
+            warningLimit = intValueFromString(value);
+        }else {
+            super.setFieldValue(fieldName, value);
+        }
+    }
+
+    @NotNull
+    @Override
+    public String getConfigHTML() {
+        return "Warning if more than " + getNumberInputHTML(FIELD_WARN_LIMIT, "size=\"4\"")+
+                " total Arcnet reconfigs in the last hour.<br/>"+
+                "Error if more than " + getNumberInputHTML(FIELD_ERROR_LIMIT, "size=\"4\"")+
+                " total Arcnet reconfigs in the last hour.";
     }
 
     @Override
@@ -47,10 +85,11 @@ public class ArcnetReconfig extends BaseChecker {
                     reconfigs.containsKey(Modstat.ArcnetReconfigs.TOTAL)) {
                 long rc_this = reconfigs.get(Modstat.ArcnetReconfigs.THIS_NODE);
                 long rc_total = reconfigs.get(Modstat.ArcnetReconfigs.TOTAL);
-                if (rc_total > 5) {
+                if (rc_total > errorLimit || rc_total > warningLimit) {
+                    String msg = countFormat.format(rc_total) +" arcnet reconfigs in the last hour. "+
+                                countFormat.format(rc_this)+" were from this node.";
                     result = new ArrayList<ReportRow>();
-                    result.add(ReportRow.error( rc_total +" arcnet reconfigs in the last hour. "+
-                            rc_this+" were from this node."));
+                    result.add((rc_total > errorLimit) ? ReportRow.error(msg) : ReportRow.warning(msg));
                 }
             }
         }
@@ -63,12 +102,13 @@ public class ArcnetReconfig extends BaseChecker {
                     reconfigs.containsKey(Modstat.ArcnetReconfigs.TOTAL)) {
                 long rc_this = reconfigs.get(Modstat.ArcnetReconfigs.THIS_NODE);
                 long rc_total = reconfigs.get(Modstat.ArcnetReconfigs.TOTAL);
-                if (rc_total > 5) {
+                if (rc_total > errorLimit) {
                     if (result == null) {
                         result = new ArrayList<ReportRow>();
                     }
-                    result.add(ReportRow.error( rc_total +" secondary arcnet reconfigs in the last hour. "+
-                            rc_this+" were from this node."));
+                    String msg = countFormat.format(rc_total) + " secondary arcnet reconfigs in the last hour. " +
+                            countFormat.format(rc_this) + " were from this node.";
+                    result.add((rc_total > errorLimit) ? ReportRow.error(msg) : ReportRow.warning(msg));
                 }
             }
         }

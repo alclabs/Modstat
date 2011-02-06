@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Automated Logic Corporation
+ * Copyright (c) 2011 Automated Logic Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,24 @@
 package com.controlj.green.modstat.checks;
 
 import com.controlj.green.modstat.Modstat;
+import com.controlj.green.modstat.checker.InvalidFieldNameException;
+import com.controlj.green.modstat.checker.InvalidFieldValueException;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
 public interface Checker {
+    static final String FIELD_ENABLE = "enable";
+
+
     List<ReportRow> check(Modstat modstat);
-    String getName();
-    String getDescription();
+    @NotNull String getId();
+    @NotNull String getFieldId(String fieldName) throws InvalidFieldNameException;
+    void setFieldValue(String fieldName, String value) throws InvalidFieldValueException, InvalidFieldNameException;
+    @NotNull String getFieldValue(String fieldName) throws InvalidFieldNameException;
+    @NotNull String getName();
+    @NotNull String getDescription();
+    @NotNull String getConfigHTML();
     void setEnabled(boolean enabled);
     boolean isEnabled();
 }

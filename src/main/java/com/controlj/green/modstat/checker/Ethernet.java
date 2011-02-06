@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Automated Logic Corporation
+ * Copyright (c) 2011 Automated Logic Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -32,7 +32,8 @@ import java.util.Map;
 import static com.controlj.green.modstat.Modstat.EthernetStats.*;
 
 public class Ethernet extends BaseChecker {
-    public Ethernet() {
+    public Ethernet(String id) {
+        super(id);
         name = "Ethernet Statistics";
         description = "Check for ethernet communications errors";
     }
@@ -53,8 +54,8 @@ public class Ethernet extends BaseChecker {
                     long value = stats.get(TX_ABORTS_OUT_OF_WIN);
                     if (value > 0) {
                         result = addRow(result, ReportRow.warning("Ethernet transmits aborted due to out of window error = " +
-                                numberFormat.format(value) +
-                                " out of a total of "+ numberFormat.format(totalTransmitted) + " transmitted."));
+                                countFormat.format(value) +
+                                " out of a total of "+ countFormat.format(totalTransmitted) + " transmitted."));
                     }
                 }
 
@@ -62,7 +63,7 @@ public class Ethernet extends BaseChecker {
                     long value = stats.get(TX_ABORTS_JABBER);
                     if (value > 0) {
                         result = addRow(result, ReportRow.warning("Ethernet transmits aborted due to jabbering = " +
-                                numberFormat.format(value) + " out of a total of "+ numberFormat.format(totalTransmitted) + " transmitted."));
+                                countFormat.format(value) + " out of a total of "+ countFormat.format(totalTransmitted) + " transmitted."));
                     }
                 }
 
@@ -70,8 +71,8 @@ public class Ethernet extends BaseChecker {
                     long value = stats.get(TX_ABORTS_16_COLLISIONS);
                     if (value > 0) {
                         result = addRow(result, ReportRow.warning("Ethernet transmits aborted due excessive collisions = " +
-                                numberFormat.format(value) +
-                                " out of a total of "+ numberFormat.format(totalTransmitted) + " transmitted."));
+                                countFormat.format(value) +
+                                " out of a total of "+ countFormat.format(totalTransmitted) + " transmitted."));
                     }
                 }
 
@@ -79,8 +80,8 @@ public class Ethernet extends BaseChecker {
                     long value = stats.get(TX_ABORTS_UNDERRUN);
                     if (value > 0) {
                         result = addRow(result, ReportRow.warning("Ethernet transmits aborted due underruns = " +
-                                numberFormat.format(value) +
-                                " out of a total of "+ numberFormat.format(totalTransmitted) + " transmitted."));
+                                countFormat.format(value) +
+                                " out of a total of "+ countFormat.format(totalTransmitted) + " transmitted."));
                     }
                 }
 
@@ -88,8 +89,8 @@ public class Ethernet extends BaseChecker {
                     long value = stats.get(RX_TOO_SMALL);
                     if (value > 0) {
                         result = addRow(result, ReportRow.warning("Ethernet receives too small = " +
-                                numberFormat.format(value) +
-                                " out of a total of "+ numberFormat.format(totalReceived) + " received."));
+                                countFormat.format(value) +
+                                " out of a total of "+ countFormat.format(totalReceived) + " received."));
                     }
                 }
 
@@ -97,8 +98,8 @@ public class Ethernet extends BaseChecker {
                     long value = stats.get(RX_TOO_BIG);
                     if (value > 0) {
                         result = addRow(result, ReportRow.warning("Ethernet receives too big = " +
-                                numberFormat.format(value) +
-                                " out of a total of "+ numberFormat.format(totalReceived) + " received."));
+                                countFormat.format(value) +
+                                " out of a total of "+ countFormat.format(totalReceived) + " received."));
                     }
                 }
 
@@ -106,8 +107,8 @@ public class Ethernet extends BaseChecker {
                     long value = stats.get(TX_NO_CHIP_MEM_A);
                     if (value > 0) {
                         result = addRow(result, ReportRow.error("Ethernet transmits out of chip memory A = " +
-                                numberFormat.format(value) +
-                                " out of a total of "+ numberFormat.format(totalTransmitted) + " transmitted."));
+                                countFormat.format(value) +
+                                " out of a total of "+ countFormat.format(totalTransmitted) + " transmitted."));
                     }
                 }
 
@@ -115,8 +116,8 @@ public class Ethernet extends BaseChecker {
                     long value = stats.get(TX_NO_CHIP_MEM_B);
                     if (value > 0) {
                         result = addRow(result, ReportRow.error("Ethernet transmits out of chip memory B = " +
-                                numberFormat.format(value) +
-                                " out of a total of "+ numberFormat.format(totalTransmitted) + " transmitted."));
+                                countFormat.format(value) +
+                                " out of a total of "+ countFormat.format(totalTransmitted) + " transmitted."));
                     }
                 }
 
@@ -124,8 +125,8 @@ public class Ethernet extends BaseChecker {
                     long value = stats.get(TX_NO_CHIP_MEM_C);
                     if (value > 0) {
                         result = addRow(result, ReportRow.error("Ethernet transmits out of chip memory C = " +
-                                numberFormat.format(value) +
-                                " out of a total of "+ numberFormat.format(totalTransmitted) + " transmitted."));
+                                countFormat.format(value) +
+                                " out of a total of "+ countFormat.format(totalTransmitted) + " transmitted."));
                     }
                 }
 
@@ -133,8 +134,8 @@ public class Ethernet extends BaseChecker {
                     long value = stats.get(RX_NO_BUFFER);
                     if (value > 0) {
                         result = addRow(result, ReportRow.error("Ethernet receive out of buffers " +
-                                numberFormat.format(value) +
-                                " time(s) out of a total of "+ numberFormat.format(totalReceived) + " received."));
+                                countFormat.format(value) +
+                                " time(s) out of a total of "+ countFormat.format(totalReceived) + " received."));
                     }
                 }
 
@@ -142,8 +143,8 @@ public class Ethernet extends BaseChecker {
                     long value = stats.get(RX_ALIGNMENT);
                     if (value > 0) {
                         result = addRow(result, ReportRow.error("Ethernet receive failed with alignment problemd " +
-                                numberFormat.format(value) +
-                                " time(s) out of a total of "+ numberFormat.format(totalReceived) + " received."));
+                                countFormat.format(value) +
+                                " time(s) out of a total of "+ countFormat.format(totalReceived) + " received."));
                     }
                 }
 
@@ -151,8 +152,8 @@ public class Ethernet extends BaseChecker {
                     long value = stats.get(RX_CRC_ERRORS);
                     if (value > 0) {
                         result = addRow(result, ReportRow.error("Ethernet receive failed with CRC error " +
-                                numberFormat.format(value) +
-                                " time(s) out of a total of "+ numberFormat.format(totalReceived) + " received."));
+                                countFormat.format(value) +
+                                " time(s) out of a total of "+ countFormat.format(totalReceived) + " received."));
                     }
                 }
 
@@ -160,8 +161,8 @@ public class Ethernet extends BaseChecker {
                     long value = stats.get(RX_DRIBBLE_ERRORS);
                     if (value > 0) {
                         result = addRow(result, ReportRow.error("Ethernet receive failed with dribble error " +
-                                numberFormat.format(value) +
-                                " time(s) out of a total of "+ numberFormat.format(totalReceived) + " received."));
+                                countFormat.format(value) +
+                                " time(s) out of a total of "+ countFormat.format(totalReceived) + " received."));
                     }
                 }
 
@@ -170,10 +171,10 @@ public class Ethernet extends BaseChecker {
                     long percentMissed = value * 100 / totalReceived;
                     if (percentMissed > 0) {
                         result = addRow(result, ReportRow.error("Over 1% of ethernet packets missed. " +
-                                numberFormat.format(value) + " out of a total of "+ numberFormat.format(totalReceived) + " received."));
+                                countFormat.format(value) + " out of a total of "+ countFormat.format(totalReceived) + " received."));
                     } else if (value > 0) {
-                        result = addRow(result, ReportRow.warning(numberFormat.format(value) +
-                                " ethernet receptions missed out of a total of " + numberFormat.format(totalReceived)));
+                        result = addRow(result, ReportRow.warning(countFormat.format(value) +
+                                " ethernet receptions missed out of a total of " + countFormat.format(totalReceived)));
                     }
                 }
             }

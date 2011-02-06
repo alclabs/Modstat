@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Automated Logic Corporation
+ * Copyright (c) 2011 Automated Logic Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,21 +25,65 @@ package com.controlj.green.modstat.checker;
 import com.controlj.green.modstat.BACnetError;
 import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.checks.ReportRow;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class BACnetErrors extends BaseChecker {
+    public static final String FIELD_WARN_LIMIT = "warn";
+    public static final String FIELD_ERROR_LIMIT = "error";
+
     private static final SimpleDateFormat dtFormatyyss = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
     private static final NumberFormat numberFormat = new DecimalFormat("#,###");
 
-    public BACnetErrors() {
-        name = "BACnet Comm Erorrs";
+    private int warnLimit = 25;
+    private int errorLimit = 100;
+
+    public BACnetErrors(String id) {
+        super(id);
+        name = "BACnet Comm Errors";
         description = "Checks for too many BACnet communications errors over the last 7 days.";
+        fieldNames.addAll(Arrays.asList(FIELD_WARN_LIMIT, FIELD_ERROR_LIMIT));
     }
+
+    @Override @NotNull
+    public String getFieldValue(String fieldName) throws InvalidFieldNameException {
+        if (FIELD_WARN_LIMIT.equals(fieldName)) {
+            return Integer.toString(warnLimit);
+        } else if (FIELD_ERROR_LIMIT.equals(fieldName)) {
+            return Integer.toString(errorLimit);
+        }
+        return super.getFieldValue(fieldName);
+    }
+
+
+    @Override
+    public void setFieldValue(String fieldName, String value) throws InvalidFieldValueException, InvalidFieldNameException {
+        if (FIELD_WARN_LIMIT.equals(fieldName)) {
+            warnLimit = intValueFromString(value);
+        } else if (FIELD_ERROR_LIMIT.equals(fieldName)) {
+            errorLimit = intValueFromString(value);
+        } else {
+            super.setFieldValue(fieldName, value);
+        }
+    }
+
+    @NotNull
+    @Override
+    public String getConfigHTML() {
+        return "Warning if more than " + getNumberInputHTML(FIELD_WARN_LIMIT, "size=\"4\"")+
+                " BACnet comm errors in the last 7 days.<br/>" +
+                "Error if more than " + getNumberInputHTML(FIELD_ERROR_LIMIT, "size=\"4\"")+
+                " BACnet comm errors in the last 7 days.";
+    }
+
+
+
 
     @Override
     public List<ReportRow> check(Modstat modstat) {
@@ -51,9 +95,6 @@ public class BACnetErrors extends BaseChecker {
             for (BACnetError bacnetError : errorList) {
                 long incoming = bacnetError.getIncomingCount();
                 long outgoing = bacnetError.getOutgoingCount();
-
-                long warnLimit = 25;
-                long errorLimit = 100;
 
                 if (incoming > errorLimit) {
                     if(result == null) { result = new ArrayList<ReportRow>(); }

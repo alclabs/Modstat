@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Automated Logic Corporation
+ * Copyright (c) 2011 Automated Logic Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -73,10 +73,17 @@ public class TreeDataServlet extends HttpServlet {
 
 
                     for (Location child : children) {
+                        if (child.getType() == LocationType.Driver) {
+                            continue;
+                        }
                         JSONObject next = new JSONObject();
+                        if (!child.hasParent()) {   // if this is the root, make it selected
+                            next.put("activate", true);
+                        }
                         next.put("title", child.getDisplayName());
                         next.put("key", child.getTransientLookupString());
                         next.put("path", child.getDisplayPath());
+                        next.put("hideCheckbox", false);
 
                         if (!child.getChildren().isEmpty()) {
                             next.put("isLazy", true);
@@ -89,12 +96,13 @@ public class TreeDataServlet extends HttpServlet {
                 }
             });
         } catch (InvalidConnectionRequestException e) {
-            //todo handle
+            // None of these should occur without programmer error - need to log when logging facility is available
+            // This is as good as printing to System.err
             e.printStackTrace();
         } catch (SystemException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         } catch (ActionExecutionException e) {
-            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+            e.printStackTrace();
         }
     }
 

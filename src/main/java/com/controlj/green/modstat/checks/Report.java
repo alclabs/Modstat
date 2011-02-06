@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Automated Logic Corporation
+ * Copyright (c) 2011 Automated Logic Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,23 +24,24 @@ package com.controlj.green.modstat.checks;
 
 import com.controlj.green.addonsupport.InvalidConnectionRequestException;
 import com.controlj.green.addonsupport.access.*;
-import com.controlj.green.addonsupport.access.aspect.ModuleStatus;
-import com.controlj.green.addonsupport.access.util.Acceptors;
 import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.ModstatParser;
 import com.controlj.green.modstat.checker.*;
+import com.controlj.green.modstat.servlets.LongRunning;
+import com.controlj.green.modstat.work.RunnableProgress;
 import org.jetbrains.annotations.NotNull;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.StringReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.lang.reflect.Constructor;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipInputStream;
 
 public class Report {
+    private static final String ATTRIB_CHECKER = "checkers";
     private int modstatCounts = 0;
 
     public int getCount() {
@@ -52,34 +53,43 @@ public class Report {
 
         final List<ReportLocation>locations = new ArrayList<ReportLocation>();
 
-        connection.runReadAction(new ReadAction() {
-            @Override
+        RunnableProgress work = (RunnableProgress) LongRunning.getWork(req);
+        if (work.isAlive() || work.hasError()) {
+            System.err.println("Report run with no modstats");
+        } else {
 
-            public void execute(@NotNull SystemAccess access) throws Exception {
-                String idParam = req.getParameter("id");
-                Location start;
-                if (idParam!=null && idParam.length()>0) {
-                    start = access.getTree(SystemTree.Network).resolve(idParam);
-                } else {
-                    start = access.getNetRoot();
-                }
+            final InputStream in = work.getCache();
 
-                Collection<ModuleStatus> aspects = start.find(ModuleStatus.class, Acceptors.acceptAll());
-                for (ModuleStatus aspect : aspects) {
-                    Modstat modstat = ModstatParser.parse(new StringReader(aspect.getReportText()));
-                    modstatCounts++;
+            connection.runReadAction(new ReadAction() {
+                @Override
 
-                    ReportLocation location = runChecks(new ReportLocation(aspect.getLocation()), modstat);
-                    if (location != null) {
-                        locations.add(location);
+                public void execute(@NotNull SystemAccess access) throws Exception {
+
+                    Checker checkers[] = getCheckers(req);
+
+                    ZipInputStream zin = new ZipInputStream(in);
+                    ZipEntry nextEntry = null;
+                    while((nextEntry = zin.getNextEntry()) != null) {
+                        String textName = nextEntry.getName();
+                        String path = textName.substring(0, textName.length()-4);   // remove the trailing ".txt"
+                        Location loc = access.getNetRoot().getDescendant(path);
+
+                        Modstat modstat = ModstatParser.parse(new InputStreamReader(zin));
+                        modstatCounts++;
+
+                        ReportLocation reportLocation = runChecks(checkers, new ReportLocation(loc), modstat);
+                        if (reportLocation != null) {
+                            locations.add(reportLocation);
+                        }
                     }
                 }
-            }
-        });
+            });
+        }
 
         return locations;
     }
 
+    /*
     public static List<ReportLocation> testReport() {
         List<ReportLocation>locations = new ArrayList<ReportLocation>();
 
@@ -98,40 +108,69 @@ public class Report {
         }
         return locations;
     }
+    */
     
-    private static ReportLocation runChecks(ReportLocation location, Modstat modstat) {
+    private static ReportLocation runChecks(Checker[] checkers, ReportLocation location, Modstat modstat) {
         ReportLocation result = null;
         for (Checker checker : checkers) {
-            List<ReportRow> rows = null;
-            try {
-                rows = checker.check(modstat);
-            } catch (Throwable th) {
-                result = location;
-                result.addRow(ReportRow.error("Error running check using "+checker.getClass().getName()+". "+th.getMessage()));
-            }
-            if (rows != null) {
-                if (result == null) {
-                    result =  location;
+            if (checker.isEnabled()) {
+                List<ReportRow> rows = null;
+                try {
+                    rows = checker.check(modstat);
+                } catch (Throwable th) {
+                    result = location;
+                    result.addRow(ReportRow.error("Error running check using "+checker.getClass().getName()+". "+th.getMessage()));
                 }
-                result.addRows(rows);
+                if (rows != null) {
+                    if (result == null) {
+                        result =  location;
+                    }
+                    result.addRows(rows);
+                }
             }
         }
         return result;
     }
 
 
-    private static final Checker[] checkers = new Checker[] {
-        new NoModstat(),
-        new WatchdogTimeouts(),
-        new ErrorMessages(),
-        new ErrorCount(),
-        new ProgramsRunning(),
-        new BACnetErrors(),
-        new DBFree(),
-        new HeapFree(),
-        new ArcnetReconfig(),
-        new Ethernet()
+    public static Checker[] getCheckers(HttpServletRequest req) {
+        Checker[] result = (Checker[]) req.getSession().getAttribute(ATTRIB_CHECKER);
+        if (result == null) {
+            result = newCheckers();
+            req.getSession().setAttribute(ATTRIB_CHECKER, result);
+        }
+        return result;
+    }
+
+    private static Checker[] newCheckers() {
+        Class classes[] = getCheckerClasses();
+        Checker[] result = new Checker[classes.length];
+        for (int i=0; i<classes.length; i++) {
+            try {
+                Constructor ctor = classes[i].getConstructor(String.class);
+                result[i] = (Checker) ctor.newInstance(Integer.toString(i));
+            } catch (Exception e) {
+                throw new RuntimeException("Can't create checker class", e);
+            }
+        }
+        return result;
+    }
+
+
+    private static Class[] getCheckerClasses() {
+        return checkerClasses;
+    }
+
+    private static Class[] checkerClasses = new Class[] {
+        NoModstat.class,
+        WatchdogTimeouts.class,
+        ErrorMessages.class,
+        ErrorCount.class,
+        ProgramsRunning.class,
+        BACnetErrors.class,
+        DBFree.class,
+        HeapFree.class,
+        ArcnetReconfig.class,
+        Ethernet.class
     };
-
-
 }

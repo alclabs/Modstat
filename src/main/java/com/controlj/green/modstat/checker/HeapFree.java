@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Automated Logic Corporation
+ * Copyright (c) 2011 Automated Logic Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,19 +24,49 @@ package com.controlj.green.modstat.checker;
 
 import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.checks.ReportRow;
+import org.jetbrains.annotations.NotNull;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class HeapFree extends BaseChecker{
-    public HeapFree() {
+    public static final String FIELD_WARN_LIMIT = "warn";
+    private int warningLimit = 5000;
+
+    public HeapFree(String id) {
+        super(id);
         name = "Memory Free";
         description = "Checks for low free memory (heap space)";
+        fieldNames.addAll(Arrays.asList(FIELD_WARN_LIMIT));
     }
 
-    private static final NumberFormat numberFormat = new DecimalFormat("#,###");
+    @Override @NotNull
+    public String getFieldValue(String fieldName) throws InvalidFieldNameException {
+        if (FIELD_WARN_LIMIT.equals(fieldName)) {
+            return Integer.toString(warningLimit);
+        }
+        return super.getFieldValue(fieldName);
+    }
+
+
+    @Override
+    public void setFieldValue(String fieldName, String value) throws InvalidFieldValueException, InvalidFieldNameException {
+        if (FIELD_WARN_LIMIT.equals(fieldName)) {
+            warningLimit = intValueFromString(value);
+        }else {
+            super.setFieldValue(fieldName, value);
+        }
+    }
+
+    @NotNull
+    @Override
+    public String getConfigHTML() {
+        return "Warning if less than " + getNumberInputHTML(FIELD_WARN_LIMIT, "size=\"5\"")+
+                " bytes of memory are free.";
+    }
 
     @Override
     public List<ReportRow> check(Modstat modstat) {
@@ -45,14 +75,18 @@ public class HeapFree extends BaseChecker{
         if (modstat.hasFreeHeap()) {
             long free = modstat.getFreeHeap();
 
-            if (free < 5000L) {
+            if (free < warningLimit) {
                 result = new ArrayList<ReportRow>();
-                String totalMem = "?";
                 if (modstat.hasCoreHardwareInfo()) {
-                    totalMem = modstat.getCoreHardwareInfo().getKRam() +"k";
+
+                    int totalMem = modstat.getCoreHardwareInfo().getKRam() * 1024;
+                    result.add(ReportRow.error("Only "+ countFormat.format(free)+" bytes out of "+
+                            countFormat.format(totalMem)+" bytes of heap space ("+
+                            percentFormat.format(free * 1.0f/totalMem)+") are available."));
+                } else {
+                    result.add(ReportRow.warning("Only " + countFormat.format(free) +
+                    " bytes of heap space are available"));
                 }
-                result.add(ReportRow.error("Only "+ numberFormat.format(free)+" bytes out of "+
-                        numberFormat.format(totalMem)+" bytes of heap space are available."));
             }
         }
         return result;

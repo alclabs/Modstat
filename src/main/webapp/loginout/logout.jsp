@@ -1,6 +1,6 @@
 <%@ page import="com.controlj.green.addonsupport.web.SingleSignOn" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %><%--
-  ~ Copyright (c) 2010 Automated Logic Corporation
+  ~ Copyright (c) 2011 Automated Logic Corporation
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal

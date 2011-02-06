@@ -2,11 +2,12 @@
 <%@ page import="com.controlj.green.modstat.checks.ReportLocation" %>
 <%@ page import="java.util.List" %>
 <%@ page import="com.controlj.green.modstat.checks.ReportRow" %>
+<%@ page import="java.net.URLEncoder" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <%--
-  ~ Copyright (c) 2010 Automated Logic Corporation
+  ~ Copyright (c) 2011 Automated Logic Corporation
   ~
   ~ Permission is hereby granted, free of charge, to any person obtaining a copy
   ~ of this software and associated documentation files (the "Software"), to deal
@@ -31,24 +32,54 @@
   Report report = new Report();
   List<ReportLocation> locations = report.runReport(request);
 %>
+<style type="text/css">
+    #report .error {
+        background-image:url('error.png');
+        background-repeat:no-repeat;
+        background-position:10px 0px;
+    }
 
+    #report .warning {
+        background-image:url('dot.png');
+        background-repeat:no-repeat;
+        background-position:10px 0px;
+    }
+
+    #report .msg {
+        padding-left:30px;
+        line-height:16px;
+    }
+
+    #report .path {
+        font-weight:bold;
+        padding-top:5px;
+    }
+
+    #legend {
+        white-space:nowrap;
+        float:right;
+        vertical-align:bottom;
+        padding-top:0px;
+        margin-top:8px;
+    }
+
+</style>
+
+<p id="legend"><img src="error.png" style="position:relative; top:4px;"/> = Error</p>
 <p>Gathered <%= report.getCount() %> modstat(s).  Issues at <%= locations.size() %> locations.</p>
-<table cellpadding="0" cellspacing="0">
+<div id="report">
   <%
       for (ReportLocation location : locations) {
   %>
-  <tr><td colspan="2"><%= location.getDisplayPath() %></td> </tr>
+  <a class="path" target="_blank" href="text.jsp?loc=<%= URLEncoder.encode(location.getLookup(),"UTF-8") %>">
+      <%= location.getDisplayPath() %>
+  </a>
   <%
       for (ReportRow row : location.getRows()) {
   %>
-  <tr>
-      <td class="spacer">&nbsp;</td>
-      <td class="<%= row.getLevel() == ReportRow.Level.ERROR ? "error" : "warning"%>"><%= row.getMessage()%></td>
-  </tr>
+        <div class="msg <%= row.getLevel() == ReportRow.Level.ERROR ? "error" : "warning"%>"><%= row.getMessage()%></div>
   <%
       }
+  }
   %>
-  <%
-      }
-  %>
-</table>
+</div>

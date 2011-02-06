@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Automated Logic Corporation
+ * Copyright (c) 2011 Automated Logic Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,6 +23,7 @@
 package com.controlj.green.modstat.checks;
 
 import com.controlj.green.addonsupport.access.Location;
+import com.controlj.green.addonsupport.access.UnresolvableException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,7 +35,7 @@ public class ReportLocation {
     List<ReportRow> rows = new ArrayList<ReportRow>();
 
     public ReportLocation(Location loc) {
-        displayPath = loc.getDisplayPath();
+        displayPath = getFullDisplayPath(loc);
         lookup = loc.getPersistentLookupString(false);
         name = loc.getDisplayName();
     }
@@ -71,5 +72,17 @@ public class ReportLocation {
 
     public void setRows(List<ReportRow> rows) {
         this.rows = rows;
+    }
+
+    private String getFullDisplayPath(Location loc) {
+        if (!loc.hasParent()) {
+            return "";
+        } else {
+            try {
+                return getFullDisplayPath(loc.getParent()) + " / " + loc.getDisplayName();
+            } catch (UnresolvableException e) {
+                throw new RuntimeException("can't resolve parent even though hasParent is true", e);
+            }
+        }
     }
 }

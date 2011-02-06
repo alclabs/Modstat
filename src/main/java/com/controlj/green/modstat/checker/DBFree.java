@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Automated Logic Corporation
+ * Copyright (c) 2011 Automated Logic Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -24,15 +24,49 @@ package com.controlj.green.modstat.checker;
 
 import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.checks.ReportRow;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class DBFree extends BaseChecker {
-    public DBFree() {
+    public static final String FIELD_WARN_LIMIT = "warn";
+
+    int warnLimit = 1000;
+
+    public DBFree(String id) {
+        super(id);
         name = "Database Free Space";
         description = "Check for small amounts of database space free.";
+        fieldNames.addAll(Arrays.asList(FIELD_WARN_LIMIT));
     }
+
+    @Override @NotNull
+    public String getFieldValue(String fieldName) throws InvalidFieldNameException {
+        if (FIELD_WARN_LIMIT.equals(fieldName)) {
+            return Integer.toString(warnLimit);
+        }
+        return super.getFieldValue(fieldName);
+    }
+
+
+    @Override
+    public void setFieldValue(String fieldName, String value) throws InvalidFieldValueException, InvalidFieldNameException {
+        if (FIELD_WARN_LIMIT.equals(fieldName)) {
+            warnLimit = intValueFromString(value);
+        } else {
+            super.setFieldValue(fieldName, value);
+        }
+    }
+
+    @NotNull
+    @Override
+    public String getConfigHTML() {
+        return "Warning if less than " + getNumberInputHTML(FIELD_WARN_LIMIT, "size=\"4\"")+
+                " bytes of database space are available.";
+    }
+
 
     @Override
     public List<ReportRow> check(Modstat modstat) {
@@ -41,10 +75,10 @@ public class DBFree extends BaseChecker {
         if (modstat.hasDatabaseFree() && modstat.hasDatabaseSize() && modstat.hasDatabaseUsed()) {
             long free = modstat.getDatabaseFree();
 
-            if (free < 2000L) {
+            if (free < warnLimit) {
                 result = new ArrayList<ReportRow>();
-                result.add(ReportRow.warning("Only "+ numberFormat.format(free)+" bytes out of "+
-                        numberFormat.format(modstat.getDatabaseSize()) + " bytes of database space are available."));
+                result.add(ReportRow.warning("Only "+ countFormat.format(free)+" bytes out of "+
+                        countFormat.format(modstat.getDatabaseSize()) + " bytes of database space are available."));
             }
         }
         return result;

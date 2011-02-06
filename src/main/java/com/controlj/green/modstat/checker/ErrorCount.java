@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Automated Logic Corporation
+ * Copyright (c) 2011 Automated Logic Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,7 +30,8 @@ import java.util.List;
 import java.util.Map;
 
 public class ErrorCount extends BaseChecker {
-    public ErrorCount() {
+    public ErrorCount(String id) {
+        super(id);
         name = "Error Count";
         description = "Check if any errors have occurred since the error counts were reset";
     }
@@ -45,7 +46,7 @@ public class ErrorCount extends BaseChecker {
                 Long errors = counts.get(Modstat.ResetCount.ERRORS);
                 if (errors > 0) {
                     if (result == null) { result = new ArrayList<ReportRow>(); }
-                    result.add(ReportRow.warning(numberFormat.format(errors) + " error(s) in reset count."));
+                    result.add(ReportRow.warning(countFormat.format(errors) + " error(s) since count reset."));
                 }
             }
         }
