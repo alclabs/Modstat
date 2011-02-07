@@ -55,7 +55,7 @@ public class Report {
 
         RunnableProgress work = (RunnableProgress) LongRunning.getWork(req);
         if (work.isAlive() || work.hasError()) {
-            System.err.println("Report run with no modstats");
+            System.err.println("Modstat Addon- Report run with no modstats");
         } else {
 
             final InputStream in = work.getCache();

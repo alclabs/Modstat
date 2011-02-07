@@ -88,7 +88,7 @@ public class ModstatWork extends Thread implements RunnableProgress {
                         Location location = aspect.getLocation();
                         String path = getReferencePath(location);
 
-                        System.out.println("Gathering modstat from "+path);
+                        //System.out.println("Gathering modstat from "+path);
 
                         ZipEntry entry = new ZipEntry(path+".txt");
                         entry.setMethod(ZipEntry.DEFLATED);
