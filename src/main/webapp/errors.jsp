@@ -3,6 +3,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="com.controlj.green.modstat.checks.ReportRow" %>
 <%@ page import="java.net.URLEncoder" %>
+<%@ page import="java.util.Date" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -64,7 +65,6 @@
     }
 
 </style>
-
 <p id="legend"><img src="error.png" style="position:relative; top:4px;"/> = Error</p>
 <p>Gathered <%= report.getCount() %> modstat(s).  Issues at <%= locations.size() %> locations.</p>
 <div id="report">

@@ -130,9 +130,9 @@ class SaveConfigServletTest extends Specification {
         when:
         checkers = Report.newCheckers()
         servlet.processParameters( ["0:enable":(String[])["true"], "1:enable":(String[])["false"],
-                "2:enable":(String[])["false"], ("8:"+ArcnetReconfig.FIELD_WARN_LIMIT) :(String[])["42"]], checkers)
+                "2:enable":(String[])["false"], ("9:"+ArcnetReconfig.FIELD_WARN_LIMIT) :(String[])["42"]], checkers)
         then:
-        checkers[8].name == "Arcnet Reconfigs"
-        checkers[8].warningLimit == 42
+        checkers[9].name == "Arcnet Reconfigs"
+        checkers[9].warningLimit == 42
     }
 }

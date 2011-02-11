@@ -70,7 +70,13 @@ public class Message {
     }
 
     public String toString() {
-        return dateTimeFormat.format(date) + " - " + message;
+        String dateString;
+        if (date != null) {
+            dateString = dateTimeFormat.format(date);
+        } else {
+            dateString = "Unknown Date";
+        }
+        return dateString + " - " + message;
     }
 
 }

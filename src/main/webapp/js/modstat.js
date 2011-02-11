@@ -61,10 +61,9 @@ Modstat =
     },
 
     showTabs : function() {
-        $('#tabs').show("blind", {}, 300)
+        $('#tabs').tabs('load', 1).show("blind", {}, 300)
         $('#gatherbutton').hide()
     }
-
 }
 
 

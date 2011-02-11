@@ -121,7 +121,7 @@ public class Report {
                     result = location;
                     result.addRow(ReportRow.error("Error running check using "+checker.getClass().getName()+". "+th.getMessage()));
                 }
-                if (rows != null) {
+                if (rows != null && rows.size() > 0) {
                     if (result == null) {
                         result =  location;
                     }
@@ -165,6 +165,7 @@ public class Report {
         NoModstat.class,
         WatchdogTimeouts.class,
         ErrorMessages.class,
+        WarningMessages.class,
         ErrorCount.class,
         ProgramsRunning.class,
         BACnetErrors.class,
