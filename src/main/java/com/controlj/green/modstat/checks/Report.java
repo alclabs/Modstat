@@ -172,6 +172,7 @@ public class Report {
         DBFree.class,
         HeapFree.class,
         ArcnetReconfig.class,
+        ArcnetReconfigCause.class,
         Ethernet.class
     };
 }

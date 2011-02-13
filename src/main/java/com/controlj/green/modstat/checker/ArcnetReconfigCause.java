@@ -26,22 +26,24 @@ import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.checks.ReportRow;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
-public class ArcnetReconfig extends BaseChecker {
+public class ArcnetReconfigCause extends BaseChecker {
     public static final String FIELD_ERROR_LIMIT = "error";
     public static final String FIELD_WARN_LIMIT = "warn";
 
-    private int errorLimit = 5;
+    private int errorLimit = 3;
     private int warningLimit = 1;
 
 
-    public ArcnetReconfig(String id) {
+    public ArcnetReconfigCause(String id) {
         super(id);
-        name        = "Arcnet Reconfigs";
-        description = "Checks for too many Arcnet reconfigurations in the last hour.";
+        name        = "Cause of Arcnet Reconfigs";
+        description = "Checks for devices causing Arcnet reconfigurations in the last hour.";
         fieldNames.addAll(Arrays.asList(FIELD_ERROR_LIMIT, FIELD_WARN_LIMIT));
-        setEnabled(false);  // defaluts to disabled
     }
 
     @Override @NotNull public String getFieldValue(String fieldName) throws InvalidFieldNameException {
@@ -85,12 +87,10 @@ public class ArcnetReconfig extends BaseChecker {
             if (reconfigs.containsKey(Modstat.ArcnetReconfigs.THIS_NODE) &&
                     reconfigs.containsKey(Modstat.ArcnetReconfigs.TOTAL)) {
                 long rc_this = reconfigs.get(Modstat.ArcnetReconfigs.THIS_NODE);
-                long rc_total = reconfigs.get(Modstat.ArcnetReconfigs.TOTAL);
-                if (countPastLimit(rc_this, rc_total)) {
-                    String msg = countFormat.format(rc_total) +" arcnet reconfigs in the last hour. "+
-                                countFormat.format(rc_this)+" were from this node.";
+                if (rc_this > errorLimit || rc_this > warningLimit) {
+                    String msg = countFormat.format(rc_this) +" arcnet reconfigs in the last hour from this device.";
                     result = new ArrayList<ReportRow>();
-                    result.add((rc_total > errorLimit) ? ReportRow.error(msg) : ReportRow.warning(msg));
+                    result.add((rc_this > errorLimit) ? ReportRow.error(msg) : ReportRow.warning(msg));
                 }
             }
         }
@@ -102,23 +102,16 @@ public class ArcnetReconfig extends BaseChecker {
             if (reconfigs.containsKey(Modstat.ArcnetReconfigs.THIS_NODE) &&
                     reconfigs.containsKey(Modstat.ArcnetReconfigs.TOTAL)) {
                 long rc_this = reconfigs.get(Modstat.ArcnetReconfigs.THIS_NODE);
-                long rc_total = reconfigs.get(Modstat.ArcnetReconfigs.TOTAL);
-                if (countPastLimit(rc_this, rc_total)) {
+                if (rc_this > errorLimit || rc_this > warningLimit) {
                     if (result == null) {
                         result = new ArrayList<ReportRow>();
                     }
-                    String msg = countFormat.format(rc_total) + " secondary arcnet reconfigs in the last hour. " +
-                            countFormat.format(rc_this) + " were from this node.";
-                    result.add((rc_total > errorLimit) ? ReportRow.error(msg) : ReportRow.warning(msg));
+                    String msg = countFormat.format(rc_this) +" arcnet reconfigs in the last hour from this device.";
+                    result.add((rc_this > errorLimit) ? ReportRow.error(msg) : ReportRow.warning(msg));
                 }
             }
         }
         return result;
-    }
-
-    private boolean countPastLimit(long count1, long count2) {
-        return ((count1 > warningLimit || count2 > warningLimit) ||
-                (count1 > errorLimit || count2 > errorLimit));
     }
 
 }

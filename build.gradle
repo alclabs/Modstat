@@ -8,7 +8,7 @@ apply from: configurations.gradleScript.resolve().iterator().next()
 /*
 apply from:'/Users/sappling/development/github/alclabs/alclabs-gradle/src/alclabs-gradle.gradle'
 */
-version = '0.8.2'
+version = '0.8.3'
 
 dependencies {
     compile 'commons-io:commons-io:1.4'
