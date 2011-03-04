@@ -51,6 +51,7 @@ public class BACnetErrors extends BaseChecker {
         name = "BACnet Comm Errors";
         description = "Checks for too many BACnet communications errors over the last 7 days.";
         fieldNames.addAll(Arrays.asList(FIELD_WARN_LIMIT, FIELD_ERROR_LIMIT));
+        setEnabled(false);
     }
 
     @Override @NotNull

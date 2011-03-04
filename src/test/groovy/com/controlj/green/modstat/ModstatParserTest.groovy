@@ -537,6 +537,7 @@ MXM:  CM 15 ($0f)      Time: 09:50:01 Thursday Sep-16-2010
         info[Modstat.EthernetStats.RX_RECEPTION_MISSED]== 206
     }
 
+   /*
     def parsedAllNew() {
         setup:
         ModstatParser parser = new ModstatParser()
@@ -550,6 +551,7 @@ MXM:  CM 15 ($0f)      Time: 09:50:01 Thursday Sep-16-2010
         lines.size() == 0
 
     }
+    */
 
     def parsedAllOld() {
         setup:

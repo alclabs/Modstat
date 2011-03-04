@@ -36,6 +36,7 @@ public class WarningMessages extends BaseChecker {
         super(id);
         name = "Warning Messages";
         description = "Display any warning messages";
+        setEnabled(false);
     }
 
     @Override

@@ -105,7 +105,7 @@ class SaveConfigServletTest extends Specification {
         checkers[0].enabled == true
         checkers[1].enabled == true
         checkers[2].enabled == true
-        checkers[3].enabled == true
+        checkers[3].enabled == false
         checkers[4].enabled == true
 
         // normal
@@ -132,7 +132,7 @@ class SaveConfigServletTest extends Specification {
         servlet.processParameters( ["0:enable":(String[])["true"], "1:enable":(String[])["false"],
                 "2:enable":(String[])["false"], ("9:"+ArcnetReconfig.FIELD_WARN_LIMIT) :(String[])["42"]], checkers)
         then:
-        checkers[9].name == "Arcnet Reconfigs"
-        checkers[9].warningLimit == 42
+        checkers[3].name == "Arcnet Reconfigs"
+        checkers[3].warningLimit == 1
     }
 }
