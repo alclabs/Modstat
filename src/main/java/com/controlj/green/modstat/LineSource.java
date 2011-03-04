@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2010 Automated Logic Corporation
+ * Copyright (c) 2011 Automated Logic Corporation
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -36,6 +36,8 @@ public class LineSource {
     private String currentLine;
     private boolean empty = false;
     boolean skippedBlanks = false;
+    private StringBuilder text = new StringBuilder();
+    int lineNumber = 0;
 
     public LineSource(Reader rdr)
     {
@@ -50,6 +52,8 @@ public class LineSource {
         try {
             while ((result = in.readLine()) != null)
             {
+                lineNumber++;
+                text.append(in + "\n");
                 if (blankLine.reset(result).matches()) {
                     skippedBlanks = true;
                 } else {
@@ -75,4 +79,11 @@ public class LineSource {
         return skippedBlanks;
     }
 
+    public String getText() {
+        return text.toString();
+    }
+
+    public int getCurrentLineNumber() {
+        return lineNumber;
+    }
 }

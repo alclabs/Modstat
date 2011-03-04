@@ -184,6 +184,7 @@ public class ModstatParser {
                     }
                 }
                 if (!source.isEmpty()) {    // line wasn't handled by this pass of section parsers.  Advance to next line and try again
+                    modstat.addUnparsedLine(source.getCurrentLine());
                     source.nextLine();
                 }
             }

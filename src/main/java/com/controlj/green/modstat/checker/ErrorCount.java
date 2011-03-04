@@ -22,6 +22,8 @@
 
 package com.controlj.green.modstat.checker;
 
+import com.controlj.green.addonsupport.access.Location;
+import com.controlj.green.addonsupport.access.SystemAccess;
 import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.checks.ReportRow;
 
@@ -33,11 +35,12 @@ public class ErrorCount extends BaseChecker {
     public ErrorCount(String id) {
         super(id);
         name = "Error Count";
-        description = "Check if any errors have occurred since the error counts were reset";
+        description = "Check if any errors have occurred since the last module format";
+        setEnabled(false);  // defaults to disabled
     }
 
     @Override
-    public List<ReportRow> check(Modstat modstat) {
+    public List<ReportRow> check(Modstat modstat, SystemAccess access, Location location) {
         List<ReportRow> result = null;
 
         if (modstat.hasResetCounts()) {

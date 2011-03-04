@@ -22,6 +22,8 @@
 
 package com.controlj.green.modstat.checker;
 
+import com.controlj.green.addonsupport.access.Location;
+import com.controlj.green.addonsupport.access.SystemAccess;
 import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.checks.ReportRow;
 
@@ -36,10 +38,11 @@ public class Ethernet extends BaseChecker {
         super(id);
         name = "Ethernet Statistics";
         description = "Check for ethernet communications errors";
+        setEnabled(false);  // defaults to disabled
     }
 
     @Override
-    public List<ReportRow> check(Modstat modstat) {
+    public List<ReportRow> check(Modstat modstat, SystemAccess access, Location location) {
         List<ReportRow> result = null;
 
         if (modstat.hasEthernetStats()) {

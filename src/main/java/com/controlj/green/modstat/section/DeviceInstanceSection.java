@@ -45,7 +45,7 @@ public class DeviceInstanceSection extends ModstatSection {
         if (parts != null)
         {
             try {
-                modstat.setDeviceID(Integer.parseInt(parts[0]));
+                modstat.setDeviceInstance(Integer.parseInt(parts[0]));
                 foundSection = true;
             } catch (NumberFormatException e) { }   // ignore and mark not found
             source.nextLine();

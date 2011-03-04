@@ -31,7 +31,10 @@ import java.util.regex.Pattern;
 
 public class FlashArchiveSection extends ModstatSection {
     //Flash Archive Status: Valid on 09/15/10 14:05:21
-    private static final Matcher validLine = Pattern.compile("Flash Archive Status: Valid on (\\d\\d/\\d\\d/\\d\\d)\\s+(\\d\\d:\\d\\d:\\d\\d)").matcher("");
+    //Flash Archive Status: Unsupported
+
+    private static final Matcher validLine = Pattern.compile("(.+) on (\\d\\d/\\d\\d/\\d\\d)\\s+(\\d\\d:\\d\\d:\\d\\d)").matcher("");
+    private static final String validPrefix = "Flash Archive Status: ";
 
 
     public FlashArchiveSection(LineSource source, Modstat modstat) {
@@ -40,17 +43,22 @@ public class FlashArchiveSection extends ModstatSection {
 
     @Override
     public boolean lookForSection() {
-        boolean foundSection = false;
         String parts[];
 
-
-        parts = matchesStart(source.getCurrentLine(), validLine);
-        if (parts != null)
-        {
-            try {
-                modstat.setFlashArchiveTime( convertDate(parts[0], parts[1], dtFormatyyss));
-                foundSection = true;
-            } catch (ParseException e) { } // not set
+        boolean foundSection = source.getCurrentLine().startsWith(validPrefix);
+        if (foundSection) {
+            String rest = source.getCurrentLine().substring(validPrefix.length());
+            parts = matchesStart(rest, validLine);
+            if (parts != null)
+            {
+                try {
+                    modstat.setFlashArchiveTime( convertDate(parts[1], parts[2], dtFormatyyss));
+                    modstat.setFlashArchiveStatus(parts[0]);
+                } catch (ParseException e) { } // not set
+            } else {
+                modstat.setFlashArchiveStatus(rest);
+            }
+            foundSection = true;
             source.nextLine();
         }
 

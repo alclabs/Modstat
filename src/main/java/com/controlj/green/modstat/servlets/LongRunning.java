@@ -52,17 +52,19 @@ public class LongRunning extends HttpServlet {
     private static final String PROCESS_TIMER = "timer";
     private static final String PROCESS_MODSTAT = "modstat";
 
-    private static final boolean test = false;
+    private boolean test = false;
 
     private static final String ATTRIB_WORK = "work";
 
     private static ServletContext sc;
+    private static final String TEST_SOURCE = "WEB-INF/modstat.zip";
 
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         sc = config.getServletContext();
+        test = getFileInWebApp(TEST_SOURCE).exists();
     }
 
     private File getFileInWebApp(String path) {
@@ -108,7 +110,7 @@ public class LongRunning extends HttpServlet {
                     }
                     RunnableProgress work;
                     if (test) {
-                        work = new TestWork(getFileInWebApp("WEB-INF/modstat.zip"));
+                        work = new TestWork(getFileInWebApp(TEST_SOURCE));
                     } else {
                         work = new ModstatWork(connection, idString);
                     }

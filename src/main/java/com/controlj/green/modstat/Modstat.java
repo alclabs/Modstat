@@ -25,11 +25,13 @@ package com.controlj.green.modstat;
 import java.util.*;
 
 public class Modstat {
+    private List<String> unparsedLines = new ArrayList<String>();
     private boolean errorReading = false;
     private boolean cmNet = false;
     private Date captureTime;
     private Date flashArchiveTime;
-    private int deviceID = -1;
+    private String flashArchiveStatus;
+    private int deviceInstance = -1;
     private int programsLoaded = -1;
     private int programsRunning = -1;
     private long freeHeap = -1;
@@ -94,6 +96,14 @@ public class Modstat {
         public static final String RX_RECEPTION_MISSED      = "Receptions missed";        
     }
 
+    public void addUnparsedLine(String line) {
+        unparsedLines.add(line);
+    }
+
+    public List<String> getUnparsedLines() {
+        return unparsedLines;
+    }
+
     public Date getCaptureTime() {
         return captureTime;
     }
@@ -106,16 +116,16 @@ public class Modstat {
         return captureTime != null;
     }
 
-    public int getDeviceID() {
-        return deviceID;
+    public int getDeviceInstance() {
+        return deviceInstance;
     }
 
-    public void setDeviceID(int deviceID) {
-        this.deviceID = deviceID;
+    public void setDeviceInstance(int deviceInstance) {
+        this.deviceInstance = deviceInstance;
     }
 
     public boolean hasDeviceID() {
-        return deviceID != -1;
+        return deviceInstance != -1;
     }
 
     public Date getFlashArchiveTime() {
@@ -128,6 +138,18 @@ public class Modstat {
 
     public boolean hasFlashArchiveTime() {
         return flashArchiveTime != null;
+    }
+
+    public String getFlashArchiveStatus() {
+        return flashArchiveStatus;
+    }
+
+    public void setFlashArchiveStatus(String flashArchiveStatus) {
+        this.flashArchiveStatus = flashArchiveStatus;
+    }
+
+    public boolean hasFlashArchiveStatus() {
+        return flashArchiveStatus != null;
     }
 
     public int getProgramsLoaded() {

@@ -22,6 +22,8 @@
 
 package com.controlj.green.modstat.checks;
 
+import com.controlj.green.addonsupport.access.Location;
+import com.controlj.green.addonsupport.access.SystemAccess;
 import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.checker.InvalidFieldNameException;
 import com.controlj.green.modstat.checker.InvalidFieldValueException;
@@ -32,8 +34,7 @@ import java.util.List;
 public interface Checker {
     static final String FIELD_ENABLE = "enable";
 
-
-    List<ReportRow> check(Modstat modstat);
+    List<ReportRow> check(Modstat modstat, SystemAccess access, Location location);
     @NotNull String getId();
     @NotNull String getFieldId(String fieldName) throws InvalidFieldNameException;
     void setFieldValue(String fieldName, String value) throws InvalidFieldValueException, InvalidFieldNameException;

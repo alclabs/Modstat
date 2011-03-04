@@ -107,7 +107,7 @@ MXM:  CM 15 ($0f)      Time: 09:50:01 Thursday Sep-16-2010
 
         then:
         m.hasDeviceID()
-        m.getDeviceID() == 300201
+        m.getDeviceInstance() == 300201
 
         when:
         m = parser.parse(new StringReader("This is\na bunch\n of garbage"))
@@ -174,6 +174,16 @@ MXM:  CM 15 ($0f)      Time: 09:50:01 Thursday Sep-16-2010
         then:
         m.hasFlashArchiveTime()
         m.flashArchiveTime == new Date(110, 8, 15, 14, 5, 21)
+        m.flashArchiveStatus == "Valid"
+        m.hasFlashArchiveStatus()
+
+        when:
+        m = parser.parse(new StringReader("Flash Archive Status: Unsupported\n"))
+
+        then:
+        !m.hasFlashArchiveTime()
+        m.hasFlashArchiveStatus()
+        m.flashArchiveStatus == "Unsupported"
     }
 
     def testPrograms() {
@@ -525,5 +535,33 @@ MXM:  CM 15 ($0f)      Time: 09:50:01 Thursday Sep-16-2010
         info[Modstat.EthernetStats.TX_DEFERRED_B]      == 2
         info[Modstat.EthernetStats.RX_DRIBBLE_ERRORS]  == 3
         info[Modstat.EthernetStats.RX_RECEPTION_MISSED]== 206
+    }
+
+    def parsedAllNew() {
+        setup:
+        ModstatParser parser = new ModstatParser()
+
+        Modstat m = parser.parse(newStyleIS)
+
+        when:
+        def lines = m.getUnparsedLines()
+
+        then:
+        lines.size() == 0
+
+    }
+
+    def parsedAllOld() {
+        setup:
+        ModstatParser parser = new ModstatParser()
+
+        Modstat m = parser.parse(oldStyleIS)
+
+        when:
+        def lines = m.getUnparsedLines()
+
+        then:
+        lines.size() == 0
+
     }
 }

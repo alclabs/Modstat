@@ -22,6 +22,8 @@
 
 package com.controlj.green.modstat.checker;
 
+import com.controlj.green.addonsupport.access.Location;
+import com.controlj.green.addonsupport.access.SystemAccess;
 import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.checks.ReportRow;
 import org.jetbrains.annotations.NotNull;
@@ -41,7 +43,7 @@ public class ArcnetReconfig extends BaseChecker {
         name        = "Arcnet Reconfigs";
         description = "Checks for too many Arcnet reconfigurations in the last hour.";
         fieldNames.addAll(Arrays.asList(FIELD_ERROR_LIMIT, FIELD_WARN_LIMIT));
-        setEnabled(false);  // defaluts to disabled
+        setEnabled(false);  // defaults to disabled
     }
 
     @Override @NotNull public String getFieldValue(String fieldName) throws InvalidFieldNameException {
@@ -75,7 +77,7 @@ public class ArcnetReconfig extends BaseChecker {
     }
 
     @Override
-    public List<ReportRow> check(Modstat modstat) {
+    public List<ReportRow> check(Modstat modstat, SystemAccess access, Location location) {
         List<ReportRow> result = null;
 
         if (modstat.hasArcnetReconfigs()) {

@@ -22,7 +22,10 @@
 
 package com.controlj.green.modstat.checker;
 
+import com.controlj.green.addonsupport.access.SystemAccess;
+import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.checks.Checker;
+import com.controlj.green.modstat.checks.ReportRow;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.Serializable;
@@ -30,6 +33,7 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 public abstract class BaseChecker implements Checker, Serializable {

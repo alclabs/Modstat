@@ -71,15 +71,17 @@ public class Report {
                     ZipEntry nextEntry = null;
                     while((nextEntry = zin.getNextEntry()) != null) {
                         String textName = nextEntry.getName();
-                        String path = textName.substring(0, textName.length()-4);   // remove the trailing ".txt"
-                        Location loc = access.getNetRoot().getDescendant(path);
+                        if (!nextEntry.isDirectory()) {
+                            String path = textName.substring(0, textName.length()-4);   // remove the trailing ".txt"
+                            Location loc = access.getNetRoot().getDescendant(path);
 
-                        Modstat modstat = ModstatParser.parse(new InputStreamReader(zin));
-                        modstatCounts++;
+                            Modstat modstat = ModstatParser.parse(new InputStreamReader(zin));
+                            modstatCounts++;
 
-                        ReportLocation reportLocation = runChecks(checkers, new ReportLocation(loc), modstat);
-                        if (reportLocation != null) {
-                            locations.add(reportLocation);
+                            ReportLocation reportLocation = runChecks(checkers, new ReportLocation(loc), modstat, access, loc);
+                            if (reportLocation != null) {
+                                locations.add(reportLocation);
+                            }
                         }
                     }
                 }
@@ -110,20 +112,20 @@ public class Report {
     }
     */
     
-    private static ReportLocation runChecks(Checker[] checkers, ReportLocation location, Modstat modstat) {
+    private static ReportLocation runChecks(Checker[] checkers, ReportLocation reportLocation, Modstat modstat, SystemAccess access, Location location) {
         ReportLocation result = null;
         for (Checker checker : checkers) {
             if (checker.isEnabled()) {
                 List<ReportRow> rows = null;
                 try {
-                    rows = checker.check(modstat);
+                    rows = checker.check(modstat, access, location);
                 } catch (Throwable th) {
-                    result = location;
+                    result = reportLocation;
                     result.addRow(ReportRow.error("Error running check using "+checker.getClass().getName()+". "+th.getMessage()));
                 }
                 if (rows != null && rows.size() > 0) {
                     if (result == null) {
-                        result =  location;
+                        result =  reportLocation;
                     }
                     result.addRows(rows);
                 }
@@ -163,16 +165,17 @@ public class Report {
 
     private static Class[] checkerClasses = new Class[] {
         NoModstat.class,
-        WatchdogTimeouts.class,
+        //DeviceIDMismatch.class,
+        ArcnetReconfigCause.class,
+        ArcnetReconfig.class,
         ErrorMessages.class,
         WarningMessages.class,
-        ErrorCount.class,
         ProgramsRunning.class,
-        BACnetErrors.class,
         DBFree.class,
         HeapFree.class,
-        ArcnetReconfig.class,
-        ArcnetReconfigCause.class,
+        BACnetErrors.class,
+        ErrorCount.class,
+        WatchdogTimeouts.class,
         Ethernet.class
     };
 }

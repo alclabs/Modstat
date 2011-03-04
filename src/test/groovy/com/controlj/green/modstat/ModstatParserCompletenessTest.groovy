@@ -20,36 +20,45 @@
  * THE SOFTWARE.
  */
 
-package com.controlj.green.modstat.checker;
+package com.controlj.green.modstat
 
-import com.controlj.green.addonsupport.access.Location;
-import com.controlj.green.addonsupport.access.SystemAccess;
-import com.controlj.green.modstat.Modstat;
-import com.controlj.green.modstat.checks.ReportRow;
+import spock.lang.Specification
+import java.util.zip.ZipInputStream
+import java.util.zip.ZipEntry
 
-import java.util.ArrayList;
-import java.util.List;
+/**
+ * 
+ */
+class ModstatParserCompletenessTest extends Specification {
 
-public class ProgramsRunning extends BaseChecker {
-    public ProgramsRunning(String id) {
-        super(id);
-        name = "All Programs Running";
-        description = "Checks that all loaded programs (GFBs) are running.";
-    }
+    private ZipInputStream zin = new ZipInputStream(getClass().getResourceAsStream("/com/controlj/green/modstat/samples/modstat.zip"));
 
-    @Override
-    public List<ReportRow> check(Modstat modstat, SystemAccess access, Location location) {
-        List<ReportRow> result = null;
+    /*
+    def testComplete() {
+        setup:
+        def problems = [:]
 
-        if (modstat.hasProgramsLoaded() && modstat.hasProgramsRunning()) {
-            int loaded = modstat.getProgramsLoaded();
-            int running = modstat.getProgramsRunning();
-
-            if (loaded != running) {
-                result = new ArrayList<ReportRow>();
-                result.add(ReportRow.error("Out of "+loaded+" program(s), "+ (loaded - running)+" are not running."));
+        ZipEntry entry;
+        while ((entry = zin.getNextEntry()) != null) {
+            if (!entry.isDirectory()) {
+                String path = entry.getName();
+                Modstat modstat = ModstatParser.parse(new InputStreamReader(zin))
+                def lines = modstat.getUnparsedLines()
+                if (lines.size() > 0) {
+                    problems[path] = lines
+                }
             }
         }
-        return result;
+
+        if (problems.size() > 0) {
+            problems.each { key, value ->
+                System.err.println(key)
+                value.each {
+                    System.err.println "   $it"
+                }
+            }
+        }
     }
+    */
+
 }

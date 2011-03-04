@@ -22,12 +22,12 @@
 
 package com.controlj.green.modstat.checker;
 
+import com.controlj.green.addonsupport.access.Location;
+import com.controlj.green.addonsupport.access.SystemAccess;
 import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.checks.ReportRow;
 import org.jetbrains.annotations.NotNull;
 
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -69,7 +69,7 @@ public class HeapFree extends BaseChecker{
     }
 
     @Override
-    public List<ReportRow> check(Modstat modstat) {
+    public List<ReportRow> check(Modstat modstat, SystemAccess access, Location location) {
         List<ReportRow> result = null;
 
         if (modstat.hasFreeHeap()) {

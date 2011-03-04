@@ -59,6 +59,10 @@ Flash storage size = 458755
 
 Raw physical switches: 0x02488000
 
+Integrated flow sensor calibration:
+ 00:-2067 10:5273
+ZASF status: offline
+
 Network Information:
   Ethernet MAC address  = 00-E0-C9-00-14-E5
   Current IP Address    = 172.16.12.18
