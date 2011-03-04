@@ -54,30 +54,28 @@
         })
         return result
     }
+    function saveConfig() {
+        $.get('servlets/saveconfig?' + serializeAll($(".config input")))
+    }
+
     function initConfig() {
         $(".config input").bind("change", function() {
-            //alert("clicked")
-            $.get('servlets/saveconfig?' + serializeAll($(".config input")))
-            /*
-            var el = $(this);
-            if (el.attr("type") == "checkbox") {
-                alert(el.attr('name')+" = "+el.attr('checked'))
-            } else {
-                alert(el.attr('name')+"= " +el.attr('value'))
-            }
-            */
+            saveConfig();
         })
-
+        $("#disable_all").bind('click', function() {
+            $('.checker_enable ').each(function() { this.checked = false; })
+            saveConfig()
+        })
     }
 </script>
-
+<button id="disable_all">Disable All</button>
 <table class="config" cellpadding="0" cellspacing="0">
 <%
     int i=0;
     for (Checker checker : checkers) {
 %>
     <tr class="<%= i%2 == 0 ? "odd":""%>">
-        <td class="enable"><input type="checkbox" <%= checker.getFieldValue(Checker.FIELD_ENABLE).equals("true")?"checked=\"true\" ":""%> name="<%= checker.getFieldId(Checker.FIELD_ENABLE)%>"/></td>
+        <td class="enable"><input class="checker_enable" type="checkbox" <%= checker.getFieldValue(Checker.FIELD_ENABLE).equals("true")?"checked=\"true\" ":""%> name="<%= checker.getFieldId(Checker.FIELD_ENABLE)%>"/></td>
         <td class="name" title="<%= checker.getDescription()%>"><%= checker.getName() %></td>
         <td class="edit"><%= checker.getConfigHTML()%></td>
     </tr>

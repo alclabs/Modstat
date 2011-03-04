@@ -120,7 +120,7 @@ public abstract class BaseChecker implements Checker, Serializable {
         }
     }
 
-    protected boolean booleanValueFromString(String value) throws InvalidFieldValueException {
+    static protected boolean booleanValueFromString(String value) throws InvalidFieldValueException {
         if ("true".equals(value)) {
             return true;
         } else if ("false".equals(value)) {
@@ -129,11 +129,19 @@ public abstract class BaseChecker implements Checker, Serializable {
         throw new InvalidFieldValueException(("'"+value+"' is not a valid boolean value.  Must be 'true' or 'false'."));
     }
 
-    protected int intValueFromString(String value) throws InvalidFieldValueException {
+    static protected int intValueFromString(String value) throws InvalidFieldValueException {
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException e) {
             throw new InvalidFieldValueException("'"+value+"' is not a valid interger value.", e);
+        }
+    }
+
+    static protected float floatValueFromString(String value) throws InvalidFieldValueException {
+        try {
+            return Float.parseFloat(value);
+        } catch (NumberFormatException e) {
+            throw new InvalidFieldValueException("'"+value+"' is not a valid float value.", e);
         }
     }
 

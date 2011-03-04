@@ -43,8 +43,8 @@ public class BACnetErrors extends BaseChecker {
     private static final SimpleDateFormat dtFormatyyss = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
     private static final NumberFormat numberFormat = new DecimalFormat("#,###");
 
-    private int warnLimit = 25;
-    private int errorLimit = 100;
+    private int warnLimit = 100;
+    private int errorLimit = 2500;
 
     public BACnetErrors(String id) {
         super(id);

@@ -5,10 +5,7 @@ repositories { mavenRepo urls: 'http://repo.alcshare.com' }
 dependencies { gradleScript group: 'com.alcshare', name: 'alclabs-gradle', ext: 'gradle', version: '1.0.2' }
 apply from: configurations.gradleScript.resolve().iterator().next()
 
-/*
-apply from:'/Users/sappling/development/github/alclabs/alclabs-gradle/src/alclabs-gradle.gradle'
-*/
-version = '0.8.3'
+version = '0.8.4'
 
 dependencies {
     compile 'commons-io:commons-io:1.4'

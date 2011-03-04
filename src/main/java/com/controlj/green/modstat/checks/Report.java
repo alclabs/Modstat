@@ -165,6 +165,7 @@ public class Report {
 
     private static Class[] checkerClasses = new Class[] {
         NoModstat.class,
+        NoDriver.class,
         //DeviceIDMismatch.class,
         ArcnetReconfigCause.class,
         ArcnetReconfig.class,
@@ -173,9 +174,11 @@ public class Report {
         ProgramsRunning.class,
         DBFree.class,
         HeapFree.class,
+        FlashStorageFree.class,
         BACnetErrors.class,
+        Ethernet.class,
+        NoPrograms.class,
         ErrorCount.class,
-        WatchdogTimeouts.class,
-        Ethernet.class
+        WatchdogTimeouts.class
     };
 }

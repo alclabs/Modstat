@@ -24,32 +24,32 @@ package com.controlj.green.modstat.checker;
 
 import com.controlj.green.addonsupport.access.Location;
 import com.controlj.green.addonsupport.access.SystemAccess;
+import com.controlj.green.modstat.FirmwareVersion;
 import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.checks.ReportRow;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class WatchdogTimeouts extends BaseChecker {
-    public WatchdogTimeouts(String id) {
+public class NoDriver extends BaseChecker {
+    public NoDriver(String id) {
         super(id);
-        name = "Watchdog Timeout Count";
-        description = "Checks for any watchdog timeouts since last module format.";
-        setEnabled(false);  // defaults to disabled
+        name = "No Driver";
+        description = "Lists modules with no driver loaded (other than boot).";
     }
 
     @Override
     public List<ReportRow> check(Modstat modstat, SystemAccess access, Location location) {
         List<ReportRow> result = null;
 
-        if (modstat.hasResetCounts()) {
-            Map<String,Long> counts = modstat.getResetCounts();
-            if (counts.containsKey("Watchdog timeouts")) {
-                long timeouts = counts.get("Watchdog timeouts");
-                if (timeouts > 0) {
+        if (modstat.hasFirmwareVersion()) {
+            List<FirmwareVersion> versions = modstat.getFirmwareVersions();
+            if (versions.size() < 2) {
+                String driverName = versions.get(0).getName();
+                String firstFour = driverName.substring(0, 4);
+                if (firstFour.equalsIgnoreCase("boot")) {
                     result = new ArrayList<ReportRow>();
-                    result.add(ReportRow.warning(timeouts +" watchdog timeouts in reset count."));
+                    result.add(ReportRow.error("No driver loaded (except for boot)!"));
                 }
             }
         }

@@ -73,9 +73,9 @@ public class ArcnetReconfigCause extends BaseChecker {
     @Override
     public String getConfigHTML() {
         return "Warning if more than " + getNumberInputHTML(FIELD_WARN_LIMIT, "size=\"4\"")+
-                " total Arcnet reconfigs in the last hour.<br/>"+
+                " total Arcnet reconfigs in the last hour. (from this node)<br/>"+
                 "Error if more than " + getNumberInputHTML(FIELD_ERROR_LIMIT, "size=\"4\"")+
-                " total Arcnet reconfigs in the last hour.";
+                " total Arcnet reconfigs in the last hour. (from this node)";
     }
 
     @Override

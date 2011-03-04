@@ -25,6 +25,7 @@ package com.controlj.green.modstat.checker;
 
 import com.controlj.green.addonsupport.access.Location;
 import com.controlj.green.addonsupport.access.SystemAccess;
+import com.controlj.green.modstat.FlashStorage;
 import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.checks.ReportRow;
 import org.jetbrains.annotations.NotNull;
@@ -33,15 +34,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class DBFree extends BaseChecker {
+public class FlashStorageFree extends BaseChecker {
     public static final String FIELD_WARN_LIMIT = "warn";
 
-    int warnLimit = 2;
+    int warnLimit = 5000;
 
-    public DBFree(String id) {
+    public FlashStorageFree(String id) {
         super(id);
-        name = "Database Free Space";
-        description = "Check for small amounts of database space free.";
+        name = "File Storage Space";
+        description = "Check for small amounts of free file storage space (flash).";
         fieldNames.addAll(Arrays.asList(FIELD_WARN_LIMIT));
     }
 
@@ -66,8 +67,8 @@ public class DBFree extends BaseChecker {
     @NotNull
     @Override
     public String getConfigHTML() {
-        return "Warning if less than " + getNumberInputHTML(FIELD_WARN_LIMIT, "size=\"4\"")+
-                "k bytes of database space are available.";
+        return "Warning if less than " + getNumberInputHTML(FIELD_WARN_LIMIT, "size=\"6\"")+
+                " bytes of database space are available.";
     }
 
 
@@ -75,15 +76,17 @@ public class DBFree extends BaseChecker {
     public List<ReportRow> check(Modstat modstat, SystemAccess access, Location location) {
         List<ReportRow> result = null;
 
-        if (modstat.hasDatabaseFree() && modstat.hasDatabaseSize() && modstat.hasDatabaseUsed()) {
-            long free = modstat.getDatabaseFree();
+        if (modstat.hasFlashStorage()) {
+            FlashStorage storage = modstat.getFlashStorage();
+            long free = storage.getFreeFileSize();
 
-            if (free < warnLimit * 1024) {
+
+            if (free < warnLimit) {
                 result = new ArrayList<ReportRow>();
-                result.add(ReportRow.warning("Only "+ countFormat.format(free/1024)+"k bytes out of "+
-                        countFormat.format(modstat.getDatabaseSize()/1024) + "k bytes of database space are available (" +
-                        percentFormat.format(((float)free) / modstat.getDatabaseSize()) + ").  This is used for general GFB storage" +
-                        "as well as trends and schedules."));
+                long available = storage.getTotalFileSize();
+                result.add(ReportRow.warning("Only "+ countFormat.format(free)+" bytes out of "+
+                        countFormat.format(available) + " bytes of file storage space are available (" +
+                        percentFormat.format(((float)free) / available) + ")."));
             }
         }
         return result;

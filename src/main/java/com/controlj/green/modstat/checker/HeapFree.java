@@ -34,7 +34,7 @@ import java.util.List;
 
 public class HeapFree extends BaseChecker{
     public static final String FIELD_WARN_LIMIT = "warn";
-    private int warningLimit = 5000;
+    private int warningLimit = 12;
 
     public HeapFree(String id) {
         super(id);
@@ -64,8 +64,8 @@ public class HeapFree extends BaseChecker{
     @NotNull
     @Override
     public String getConfigHTML() {
-        return "Warning if less than " + getNumberInputHTML(FIELD_WARN_LIMIT, "size=\"5\"")+
-                " bytes of memory are free.";
+        return "Warning if less than " + getNumberInputHTML(FIELD_WARN_LIMIT, "size=\"4\"")+
+                "k bytes of memory are free.";
     }
 
     @Override
@@ -75,14 +75,14 @@ public class HeapFree extends BaseChecker{
         if (modstat.hasFreeHeap()) {
             long free = modstat.getFreeHeap();
 
-            if (free < warningLimit) {
+            if (free < (warningLimit * 1024 )) {
                 result = new ArrayList<ReportRow>();
                 if (modstat.hasCoreHardwareInfo()) {
 
                     int totalMem = modstat.getCoreHardwareInfo().getKRam() * 1024;
-                    result.add(ReportRow.error("Only "+ countFormat.format(free)+" bytes out of "+
+                    result.add(ReportRow.warning("Only "+ countFormat.format(free)+" bytes out of "+
                             countFormat.format(totalMem)+" bytes of heap space ("+
-                            percentFormat.format(free * 1.0f/totalMem)+") are available."));
+                            percentFormat.format(( (float)free) /totalMem)+") are available."));
                 } else {
                     result.add(ReportRow.warning("Only " + countFormat.format(free) +
                     " bytes of heap space are available"));

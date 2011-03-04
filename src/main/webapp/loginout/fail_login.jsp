@@ -36,13 +36,13 @@
 <table border=0 cellpadding=0 cellspacing=0 style="width:100%; height:100%; vertical-align:middle; border:solid #A8A8A8 1px;">
   <tr>
      <td align="left">&nbsp;</td>
-     <td class="centered" >
+     <td class="centered" width="100px">
         <table class="centered" border=0 cellpadding=0 cellspacing=0 >
           <tr>
               <td class="main">Log In Failed</td>
           </tr>
           <tr>
-               <td><%= request.getAttribute("loginerr")%></td>
+               <td><%= (request.getAttribute("loginerr") != null) ? request.getAttribute("loginerr") : ""%></td>
           </tr>
           <tr>
               <td><form><input id="button" type="button" value="Try Again" onclick="history.go(-1);return true;"></form></td>

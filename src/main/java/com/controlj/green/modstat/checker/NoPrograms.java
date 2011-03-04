@@ -29,29 +29,23 @@ import com.controlj.green.modstat.checks.ReportRow;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
-public class WatchdogTimeouts extends BaseChecker {
-    public WatchdogTimeouts(String id) {
+public class NoPrograms extends BaseChecker {
+    public NoPrograms(String id) {
         super(id);
-        name = "Watchdog Timeout Count";
-        description = "Checks for any watchdog timeouts since last module format.";
-        setEnabled(false);  // defaults to disabled
+        name = "No Programs";
+        description = "Lists modules with no control programs loaded.";
+        setEnabled(false);
     }
 
     @Override
     public List<ReportRow> check(Modstat modstat, SystemAccess access, Location location) {
         List<ReportRow> result = null;
 
-        if (modstat.hasResetCounts()) {
-            Map<String,Long> counts = modstat.getResetCounts();
-            if (counts.containsKey("Watchdog timeouts")) {
-                long timeouts = counts.get("Watchdog timeouts");
-                if (timeouts > 0) {
-                    result = new ArrayList<ReportRow>();
-                    result.add(ReportRow.warning(timeouts +" watchdog timeouts in reset count."));
-                }
-            }
+        if (modstat.hasProgramsLoaded() && (modstat.getProgramsLoaded() == 0)) {
+
+            result = new ArrayList<ReportRow>();
+            result.add(ReportRow.error("No programs loaded.  This is fine for routers."));
         }
         return result;
     }
