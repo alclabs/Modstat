@@ -23,6 +23,7 @@
 package com.controlj.green.modstat.work;
 
 import com.controlj.green.addonsupport.access.*;
+import com.controlj.green.addonsupport.access.aspect.Device;
 import com.controlj.green.addonsupport.access.aspect.ModuleStatus;
 import com.controlj.green.addonsupport.access.util.Acceptors;
 import org.apache.commons.io.IOUtils;
@@ -86,22 +87,27 @@ public class ModstatWork extends Thread implements RunnableProgress {
 
                     for (ModuleStatus aspect : aspects) {
                         Location location = aspect.getLocation();
-                        String path = getReferencePath(location);
+                        try {
+                            if (!location.getAspect(Device.class).isOutOfService()) {
+                                String path = getReferencePath(location);
 
-                        //System.out.println("Gathering modstat from "+path);
+                                //System.out.println("Gathering modstat from "+path);
 
-                        ZipEntry entry = new ZipEntry(path+".txt");
-                        entry.setMethod(ZipEntry.DEFLATED);
-                        zout.putNextEntry(entry);
-                        IOUtils.copy(new StringReader(aspect.getReportText()), zout);
-                        zout.closeEntry();
-
-                        synchronized (this) {
-                            progress++;
-                            if (isInterrupted()) {
-                                error = new Exception("Gathering Modstats interrupted");
-                                return;
+                                ZipEntry entry = new ZipEntry(path+".txt");
+                                entry.setMethod(ZipEntry.DEFLATED);
+                                zout.putNextEntry(entry);
+                                IOUtils.copy(new StringReader(aspect.getReportText()), zout);
+                                zout.closeEntry();
+        
+                                synchronized (this) {
+                                    progress++;
+                                    if (isInterrupted()) {
+                                        error = new Exception("Gathering Modstats interrupted");
+                                        return;
+                                    }
+                                }
                             }
+                        } catch (NoSuchAspectException e) { // skip and go to the next one
                         }
                     }
 

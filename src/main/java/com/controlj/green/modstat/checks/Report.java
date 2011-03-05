@@ -166,7 +166,8 @@ public class Report {
     private static Class[] checkerClasses = new Class[] {
         NoModstat.class,
         NoDriver.class,
-        //DeviceIDMismatch.class,
+        DeviceIDMismatch.class,
+        DriverMismatch.class,
         ArcnetReconfigCause.class,
         ArcnetReconfig.class,
         ErrorMessages.class,

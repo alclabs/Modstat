@@ -224,7 +224,7 @@ MXM:  CM 15 ($0f)      Time: 09:50:01 Thursday Sep-16-2010
         //  LGRME2M DRIVER   - v2.24:013   Sep  3 2009
 
         then:
-        m.hasFirmwareVersion()
+        m.hasFirmwareVersions()
         sections.size() == 2
         sections[0].name        == "Boot16-E"
         sections[0].version     == "4.01:001"
@@ -241,7 +241,7 @@ MXM:  CM 15 ($0f)      Time: 09:50:01 Thursday Sep-16-2010
         //LGRME2M DRIVER   - v4.01:296   Sep  7 2010
 
         then:
-        m.hasFirmwareVersion()
+        m.hasFirmwareVersions()
         sections.size() == 2
         sections[0].name        == "Boot16-E"
         sections[0].version     == "4.03:001"

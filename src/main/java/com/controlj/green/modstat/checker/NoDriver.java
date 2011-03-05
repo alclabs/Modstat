@@ -42,15 +42,13 @@ public class NoDriver extends BaseChecker {
     public List<ReportRow> check(Modstat modstat, SystemAccess access, Location location) {
         List<ReportRow> result = null;
 
-        if (modstat.hasFirmwareVersion()) {
+        if (modstat.hasFirmwareVersions()) {
             List<FirmwareVersion> versions = modstat.getFirmwareVersions();
-            if (versions.size() < 2) {
-                String driverName = versions.get(0).getName();
-                String firstFour = driverName.substring(0, 4);
-                if (firstFour.equalsIgnoreCase("boot")) {
-                    result = new ArrayList<ReportRow>();
-                    result.add(ReportRow.error("No driver loaded (except for boot)!"));
-                }
+            FirmwareVersion version = DriverMismatch.getNonBootDriver(versions);
+
+            if (version == null) {
+                result = new ArrayList<ReportRow>();
+                result.add(ReportRow.error("No driver loaded (except for boot)!"));
             }
         }
         return result;

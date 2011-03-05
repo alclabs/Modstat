@@ -185,7 +185,7 @@ public class Modstat {
         firmwareVersions.add(newVersion);
     }
 
-    public boolean hasFirmwareVersion() {
+    public boolean hasFirmwareVersions() {
         return !firmwareVersions.isEmpty();
     }
 
