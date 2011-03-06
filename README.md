@@ -15,6 +15,8 @@ including:
 * Ethernet transmit / receive errrors
 * No Driver
 * No Programs
+* Driver Version Mismatch
+* Device ID Mismatch
 
 Currently, the ModuleStatus Aspect in the directaccess add-on api only gets the modstat as a
 string. This add-on is the first to actually parse the modstat into more useful components. We
