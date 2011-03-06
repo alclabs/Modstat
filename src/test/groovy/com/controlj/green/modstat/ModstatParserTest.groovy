@@ -357,6 +357,20 @@ MXM:  CM 15 ($0f)      Time: 09:50:01 Thursday Sep-16-2010
         m.bacnetErrors[0].outgoingCount == 3
     }
 
+    def routes() {
+        setup:
+        ModstatParser parser = new ModstatParser()
+
+        when:
+        Modstat m = parser.parse(newStyleIS)
+
+        then:
+        m.hasRoutesUsed()
+        m.hasRoutesMax()
+        m.routesUsed == 166
+        m.routesMax == 500
+    }
+
 
     def hardwareInfo() {
         setup:
@@ -460,11 +474,13 @@ MXM:  CM 15 ($0f)      Time: 09:50:01 Thursday Sep-16-2010
 
         then:
         m.hasFlashStorage()
-        fs.flashSize == 458755
-        fs.totalFileSize == 458752
-        fs.maxFileSize == 458750
-        fs.usedFileSize == 5412
-        fs.freeFileSize == 453340
+        fs.flashSize == 7061504
+        fs.archiveSize == 7045120
+        fs.hasArchiveSize()
+        fs.totalFileSize == 16384
+        fs.maxFileSize == 7061504
+        fs.usedFileSize == 6376
+        fs.freeFileSize == 10008
     }
 
 
@@ -477,7 +493,13 @@ MXM:  CM 15 ($0f)      Time: 09:50:01 Thursday Sep-16-2010
         Modstat m = parser.parse(oldStyleIS)
 
         then:
-        m.switches == 0x2488000
+        m.switches == '0x2488000'
+
+        when:
+        m = parser.parse(new StringReader("Raw physical switches = 01B20000 00000000\n"))
+
+        then:
+        m.switches == '01B20000 00000000'
     }
 
 
@@ -537,7 +559,38 @@ MXM:  CM 15 ($0f)      Time: 09:50:01 Thursday Sep-16-2010
         info[Modstat.EthernetStats.RX_RECEPTION_MISSED]== 206
     }
 
-   /*
+    def secondaryArcnetStats() {
+        setup:
+        ModstatParser parser = new ModstatParser()
+
+        Modstat m = parser.parse(newStyleIS)
+        //Secondary ARC156 cumulative diagnostics since last reset:
+        //  Rx READY
+        //  Tx READY
+        //  SlaveResets=1
+        //  RxCmd=1976670
+        //  TxCmd=3829326
+        //  OverrunErrors=1
+        //  ParityErrors=0
+
+
+        when:
+        Map info = m.getSecondaryArcnetStats()
+
+        then:
+        m.hasSecondaryArcnetStats()
+        m.hasSecondaryArcnetRxState()
+        m.hasSecondaryArcnetTxState()
+        m.secondaryArcnetRxState == "READY"
+        m.secondaryArcnetTxState == "READY"
+        info[Modstat.SecondaryArcnetStats.SLAVE_RESETS]     == 1
+        info[Modstat.SecondaryArcnetStats.RX_CMD]           == 1976670
+        info[Modstat.SecondaryArcnetStats.TX_CMD]           == 3829326
+        info[Modstat.SecondaryArcnetStats.OVERRUN_ERRORS]   == 1
+        info[Modstat.SecondaryArcnetStats.PARITY_ERRORS]    == 0
+    }
+
+
     def parsedAllNew() {
         setup:
         ModstatParser parser = new ModstatParser()
@@ -551,7 +604,6 @@ MXM:  CM 15 ($0f)      Time: 09:50:01 Thursday Sep-16-2010
         lines.size() == 0
 
     }
-    */
 
     def parsedAllOld() {
         setup:

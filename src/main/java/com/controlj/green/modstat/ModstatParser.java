@@ -153,14 +153,17 @@ public class ModstatParser {
         sections.add(new ArcnetReconfigSection(source, modstat));
         sections.add(new Arcnet2ReconfigSection(source, modstat));
         sections.add(new BACnetErrorSection(source, modstat));
+        sections.add(new RoutesSection(source, modstat));        
         sections.add(new CoreHardwareSection(source, modstat));
         sections.add(new BaseHardwareSection(source, modstat));
         sections.add(new FreeHeapSection(source, modstat));
         sections.add(new DatabaseSection(source, modstat));
         sections.add(new FlashStorageSection(source, modstat));
         sections.add(new SwitchesSection(source, modstat));
+        sections.add(new FlowSensorSection(source, modstat));
         sections.add(new NetworkInformationSection(source, modstat));
         sections.add(new EthernetSection(source, modstat));
+        sections.add(new SecondaryArcnetStatSection(source, modstat));        
 
         return sections;
     }

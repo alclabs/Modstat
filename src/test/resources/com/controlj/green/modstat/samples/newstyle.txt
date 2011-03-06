@@ -46,6 +46,8 @@ ARC156 reconfigurations during the last hour (cleared upon reset):
 BACnet comm errors in the last 7 days (cleared by format):    Incoming Outgoing
   ARC156 data link                          09/15/10 16:42:54        0        3
 
+Routes: 166/500 in use
+
 Main board hardware:
   Type=69, board=4, manufactured on 02/23/2001, S/N LME120010N
   RAM: 2048 kBytes;    FLASH: 1024 kBytes, type = 1
@@ -54,8 +56,9 @@ Largest free heap space = 18432.
 
 Database size = 1491622 , used = 217618, free = 1274004.
 
-Flash storage size = 458755
-  File storage size = 458752 (max = 458750), used = 5412, free = 453340
+Flash storage size = 7061504
+  Archive storage size = 7045120
+  File storage size = 16384 (max = 7061504), used = 6376, free = 10008
 
 Raw physical switches: 0x02488000
 
@@ -95,3 +98,28 @@ Ethernet statistics:
   Rx CRC errors            = 0
   Rx dribble errors        = 3
   Receptions missed        = 206
+
+Secondary ARC156 cumulative diagnostics since last reset:
+  Rx READY
+  Tx READY
+  SlaveResets=1
+  RxCmd=1976670
+  TxCmd=3829326
+  OverrunErrors=1
+  ParityErrors=0
+  FramingErrors=0
+  SlaveNotReadyRx=0
+  SlaveNotReadyTx=20
+  SlaveTimeoutTx=6
+  SlaveCTSWaitTx=1587538
+  BadLlc=0
+  BadSAP=0
+  BadServicePrimitive=0
+  NoPacketErrors=586
+  UpQueueErrors=0
+  DownQueueErrors=0
+  RxCmdQueueErrors=132
+  PowerOnResets=2
+  ExcessiveNaks=3
+  Reconfigs=11
+  ReconfigsThisNode=3

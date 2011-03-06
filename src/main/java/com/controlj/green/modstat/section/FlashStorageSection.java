@@ -33,9 +33,14 @@ public class FlashStorageSection extends ModstatSection {
 
     //Flash storage size = 458752
     //  File storage size = 458752 (max = 458752), used = 6320, free = 452432
+    
+    //Flash storage size = 7061504
+    //  Archive storage size = 7045120
+    //  File storage size = 16384 (max = 7061504), used = 6376, free = 10008
 
-    private static final Matcher firstLine = Pattern.compile("Flash storage size = (\\d+)").matcher("");
-    private static final Matcher secondLine = Pattern.compile("  File storage size = (\\d+) \\(max = (\\d+)\\), used = (\\d+), free = (\\d+)").matcher("");
+    private static final Pattern firstLine = Pattern.compile("Flash storage size = (\\d+)");
+    private static final Pattern secondLine = Pattern.compile("\\s+Archive storage size = (\\d+)");
+    private static final Pattern thirdLine = Pattern.compile("\\s+File storage size = (\\d+) \\(max = (\\d+)\\), used = (\\d+), free = (\\d+)");
 
 
 
@@ -49,15 +54,24 @@ public class FlashStorageSection extends ModstatSection {
         String parts[];
 
 
-        parts = matchesStart(source.getCurrentLine(), firstLine);
+        parts = matchesStart(source.getCurrentLine(), firstLine.matcher(""));
         if (parts != null)
         {
             try {
                 long flashSize = (Long.parseLong(parts[0]));
+                source.nextLine();
 
-                parts = matchesStart(source.nextLine(), secondLine);
+                parts = matchesStart(source.getCurrentLine(), secondLine.matcher(""));
+                long archiveSize = Long.MIN_VALUE;
+                if (parts != null) {
+                    archiveSize = Long.parseLong(parts[0]);
+                    source.nextLine();
+                }
+
+                parts = matchesStart(source.getCurrentLine(), thirdLine.matcher(""));
                 if (parts != null) {
                     modstat.setFlashStorage(new FlashStorage(flashSize,
+                            archiveSize,
                             Long.parseLong(parts[0]),
                             Long.parseLong(parts[1]),
                             Long.parseLong(parts[2]),

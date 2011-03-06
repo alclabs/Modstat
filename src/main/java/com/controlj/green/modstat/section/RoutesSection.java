@@ -20,50 +20,41 @@
  * THE SOFTWARE.
  */
 
-package com.controlj.green.modstat;
+package com.controlj.green.modstat.section;
 
-public class FlashStorage {
-    private long flashSize;
-    private long totalFileSize;
-    private long maxFileSize;
-    private long usedFileSize;
-    private long freeFileSize;
-    private long archiveSize = Long.MIN_VALUE;
+import com.controlj.green.modstat.LineSource;
+import com.controlj.green.modstat.Modstat;
 
-    public FlashStorage(long flashSize, long archiveSize, long totalFileSize, long maxFileSize, long usedFileSize, long freeFileSize) {
-        this.flashSize = flashSize;
-        this.archiveSize = archiveSize;
-        this.totalFileSize = totalFileSize;
-        this.maxFileSize = maxFileSize;
-        this.usedFileSize = usedFileSize;
-        this.freeFileSize = freeFileSize;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class RoutesSection extends ModstatSection {
+
+    // Routes: 166/500 in use
+
+    private static final Pattern validLine = Pattern.compile(".*Routes: (\\d+)/(\\d+.) in use");
+
+
+    public RoutesSection(LineSource source, Modstat modstat) {
+        super(source, modstat);
     }
 
-    public boolean hasArchiveSize() {
-        return archiveSize != Long.MIN_VALUE;
-    }
+    @Override
+    public boolean lookForSection() {
+        boolean foundSection = false;
+        String parts[];
 
-    public long getArchiveSize() {
-        return archiveSize;
-    }
+        parts = matchesStart(source.getCurrentLine(), validLine.matcher(""));
+        if (parts != null)
+        {
+            try {
+                modstat.setRoutesUsed(Integer.parseInt(parts[0]));
+                modstat.setRoutesMax(Integer.parseInt(parts[1]));
+                foundSection = true;
+            } catch (NumberFormatException e) { } // not set
+            source.nextLine();
+        }
 
-    public long getFlashSize() {
-        return flashSize;
-    }
-
-    public long getTotalFileSize() {
-        return totalFileSize;
-    }
-
-    public long getMaxFileSize() {
-        return maxFileSize;
-    }
-
-    public long getUsedFileSize() {
-        return usedFileSize;
-    }
-
-    public long getFreeFileSize() {
-        return freeFileSize;
+        return foundSection;
     }
 }

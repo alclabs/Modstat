@@ -25,32 +25,42 @@ package com.controlj.green.modstat.section;
 import com.controlj.green.modstat.LineSource;
 import com.controlj.green.modstat.Modstat;
 
-import java.util.regex.Matcher;
+import java.text.ParseException;
 import java.util.regex.Pattern;
 
-public class SwitchesSection extends ModstatSection {
+public class FlowSensorSection extends ModstatSection {
+    //Integrated flow sensor calibration:
+    //00:-2067 10:5273
+    //ZASF status: offline
 
-    //Raw physical switches: 0x3008000
-    //Raw physical switches = 01B20000 00000000
-    private static final Pattern validLine = Pattern.compile("Raw physical switches:?\\s*=?\\s*(.+)");
+    private static final Pattern calibrationPattern = Pattern.compile("\\s*(\\-?\\d+):(\\-?\\d+) (\\-?\\d+):(\\-?\\d+)");
+    private static final String validSectionPrefix = "Integrated flow sensor calibration:";
+    private static final String statusPrefix = "ZASF status: ";
 
 
-    public SwitchesSection(LineSource source, Modstat modstat) {
+    public FlowSensorSection(LineSource source, Modstat modstat) {
         super(source, modstat);
     }
 
     @Override
     public boolean lookForSection() {
-        boolean foundSection = false;
         String parts[];
 
-
-        parts = matchesStart(source.getCurrentLine(), validLine.matcher(""));
-        if (parts != null)
-        {
-            modstat.setSwitches(parts[0]);
-            foundSection = true;
+        boolean foundSection = source.getCurrentLine().startsWith(validSectionPrefix);
+        if (foundSection) {
             source.nextLine();
+
+            if (calibrationPattern.matcher(source.getCurrentLine()).matches()) {
+                modstat.setFlowSensorCalibration(source.getCurrentLine());
+                source.nextLine();
+            }
+            if (source.getCurrentLine().startsWith(statusPrefix)) {
+                String status = source.getCurrentLine().substring(statusPrefix.length());
+                modstat.setZasfStatus(status);
+                source.nextLine();
+            }
+            
+            foundSection = true;
         }
 
         return foundSection;

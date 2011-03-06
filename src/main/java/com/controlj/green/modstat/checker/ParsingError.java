@@ -20,39 +20,33 @@
  * THE SOFTWARE.
  */
 
-package com.controlj.green.modstat.section;
+package com.controlj.green.modstat.checker;
 
-import com.controlj.green.modstat.LineSource;
+import com.controlj.green.addonsupport.access.Location;
+import com.controlj.green.addonsupport.access.SystemAccess;
 import com.controlj.green.modstat.Modstat;
+import com.controlj.green.modstat.checks.ReportRow;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.ArrayList;
+import java.util.List;
 
-public class SwitchesSection extends ModstatSection {
-
-    //Raw physical switches: 0x3008000
-    //Raw physical switches = 01B20000 00000000
-    private static final Pattern validLine = Pattern.compile("Raw physical switches:?\\s*=?\\s*(.+)");
-
-
-    public SwitchesSection(LineSource source, Modstat modstat) {
-        super(source, modstat);
+public class ParsingError extends BaseChecker {
+    public ParsingError(String id) {
+        super(id);
+        name = "Parsing Error";
+        description = "Modstats with information that could not be parsed.  Please report on alcshare.com.";
+        setEnabled(false);
     }
 
     @Override
-    public boolean lookForSection() {
-        boolean foundSection = false;
-        String parts[];
+    public List<ReportRow> check(Modstat modstat, SystemAccess access, Location location) {
+        List<ReportRow> result = null;
 
-
-        parts = matchesStart(source.getCurrentLine(), validLine.matcher(""));
-        if (parts != null)
-        {
-            modstat.setSwitches(parts[0]);
-            foundSection = true;
-            source.nextLine();
+        List<String> unparsedLines = modstat.getUnparsedLines();
+        if (unparsedLines.size() > 0) {
+            result = new ArrayList<ReportRow>();
+            result.add(ReportRow.error("Could not parse part of modstat! First unparsed line:\""+unparsedLines.get(0)+"\""));
         }
-
-        return foundSection;
+        return result;
     }
 }

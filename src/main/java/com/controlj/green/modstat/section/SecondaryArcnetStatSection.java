@@ -28,14 +28,16 @@ import com.controlj.green.modstat.Modstat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SwitchesSection extends ModstatSection {
+public class SecondaryArcnetStatSection extends ModstatSection {
+    //Secondary ARC156 cumulative diagnostics since last reset:
+    //  Rx READY
+    //  Tx READY
+    //  SlaveResets=1
+    //  RxCmd=1976670
+    private static final Matcher validLine = Pattern.compile("\\s+(.+)\\s*=\\s*(\\d+)\\s*").matcher("");
 
-    //Raw physical switches: 0x3008000
-    //Raw physical switches = 01B20000 00000000
-    private static final Pattern validLine = Pattern.compile("Raw physical switches:?\\s*=?\\s*(.+)");
 
-
-    public SwitchesSection(LineSource source, Modstat modstat) {
+    public SecondaryArcnetStatSection(LineSource source, Modstat modstat) {
         super(source, modstat);
     }
 
@@ -44,13 +46,23 @@ public class SwitchesSection extends ModstatSection {
         boolean foundSection = false;
         String parts[];
 
-
-        parts = matchesStart(source.getCurrentLine(), validLine.matcher(""));
-        if (parts != null)
-        {
-            modstat.setSwitches(parts[0]);
-            foundSection = true;
-            source.nextLine();
+        if (source.getCurrentLine().startsWith("Secondary ARC156 cumulative diagnostics")) {
+            String stateLine = source.nextLine();
+            if (stateLine.startsWith("  Rx ")) {
+                modstat.setSecondaryArcnetRxState(stateLine.substring(5));
+            }
+            stateLine = source.nextLine();
+            if (stateLine.startsWith("  Tx ")) {
+                modstat.setSecondaryArcnetTxState(stateLine.substring(5));
+            }
+            while ((parts = matchesStart(source.nextLine(), validLine)) != null) {
+                String name = parts[0].trim();
+                try {
+                    long count = Long.parseLong(parts[1]);
+                    modstat.getSecondaryArcnetStats().put(name, count);
+                    foundSection = true;
+                } catch (NumberFormatException e) { }
+            }
         }
 
         return foundSection;

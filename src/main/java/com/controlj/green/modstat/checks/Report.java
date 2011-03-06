@@ -180,6 +180,7 @@ public class Report {
         Ethernet.class,
         NoPrograms.class,
         ErrorCount.class,
-        WatchdogTimeouts.class
+        WatchdogTimeouts.class,
+        ParsingError.class
     };
 }

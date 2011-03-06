@@ -34,13 +34,14 @@ public class Modstat {
     private int deviceInstance = -1;
     private int programsLoaded = -1;
     private int programsRunning = -1;
+    private int routesUsed = -1;
+    private int routesMax = -1;
     private long freeHeap = -1;
     private long databaseSize = -1;
     private long databaseUsed = -1;
     private long databaseFree = -1;
     private String applicationSoftwareVersion;
-    boolean switchesSet = false;
-    private int switches;
+    private String switches;
     private DownloadInfo downloadInfo;
     private List<FirmwareVersion> firmwareVersions = new ArrayList<FirmwareVersion>();
     private Map<String, Long>  resetCounts = new HashMap<String,Long>();
@@ -49,12 +50,18 @@ public class Modstat {
     private List<BACnetError> bacnetErrors = new ArrayList<BACnetError>();
     private Map<String,String> networkInfo = new HashMap<String,String>();
     private Map<String,Long> ethernetStats = new HashMap<String,Long>();
+    private Map<String,Long> secondaryArcnetStats = new HashMap<String,Long>();
+    private String secondaryArcnetRxState;
+    private String secondaryArcnetTxState;
     private List<Message> errorMessages = new ArrayList<Message>();
     private List<Message> warningMessages = new ArrayList<Message>();
     private List<Message> infoMessages = new ArrayList<Message>();
     private HardwareInfo coreHardwareInfo;  // also main board
     private HardwareInfo baseHardwareInfo;
     private FlashStorage flashStorage;
+    private String flowSensorCalibration;
+    private String zasfStatus;
+
 
     public interface ResetCount {
         public static final String POWER_FAILURES = "Power failures";
@@ -94,6 +101,30 @@ public class Modstat {
         public static final String RX_CRC_ERRORS            = "Rx CRC errors";
         public static final String RX_DRIBBLE_ERRORS        = "Rx dribble errors";
         public static final String RX_RECEPTION_MISSED      = "Receptions missed";        
+    }
+    
+    public interface SecondaryArcnetStats {
+        public static final String SLAVE_RESETS             = "SlaveResets";
+        public static final String RX_CMD                   = "RxCmd";
+        public static final String TX_CMD                   = "TxCmd";
+        public static final String OVERRUN_ERRORS           = "OverrunErrors";
+        public static final String PARITY_ERRORS            = "ParityErrors";
+        public static final String FRAMING_ERRORS           = "FramingErrors";
+        public static final String SLAVE_NOT_READY_RX       = "SlaveNotReadyRx";
+        public static final String SLAVE_NOT_READY_TX       = "SlaveNotReadyTx";
+        public static final String Slave_Timeout_Tx         = "SlaveTimeoutTx";
+        public static final String SLAVE_CTS_WAIT_TX        = "SlaveCTSWaitTx";
+        public static final String BAD_LLC                  = "BadLlc";
+        public static final String BAD_SAP                  = "BadSAP";
+        public static final String BAD_SERVICE_PRIMITIVE    = "BadServicePrimitive";
+        public static final String NO_PACKET_ERRORS         = "NoPacketErrors";
+        public static final String UP_QUEUE_ERRORS          = "UpQueueErrors";
+        public static final String DOWN_QUEUE_ERRORS        = "DownQueueErrors";
+        public static final String RX_CMD_QUEUE_ERRORS      = "RxCmdQueueErrors";
+        public static final String POWER_ON_RESETS          = "PowerOnResets";
+        public static final String EXCESSIVE_NAKS           = "ExcessiveNaks";
+        public static final String RECONFIGS                = "Reconfigs";
+        public static final String RECONFIGS_THIS_NODE      = "ReconfigsThisNode";        
     }
 
     public void addUnparsedLine(String line) {
@@ -310,17 +341,48 @@ public class Modstat {
         return !ethernetStats.isEmpty();
     }
 
-    public int getSwitches() {
+    public Map<String, Long> getSecondaryArcnetStats() {
+        return secondaryArcnetStats;
+    }
+
+    public boolean hasSecondaryArcnetStats() {
+        return !secondaryArcnetStats.isEmpty();
+    }
+
+    public boolean hasSecondaryArcnetRxState() {
+        return secondaryArcnetRxState != null;
+    }
+
+    public String getSecondaryArcnetRxState() {
+        return secondaryArcnetRxState;
+    }
+
+    public void setSecondaryArcnetRxState(String secondaryArcnetRxState) {
+        this.secondaryArcnetRxState = secondaryArcnetRxState;
+    }
+
+    public boolean hasSecondaryArcnetTxState() {
+        return secondaryArcnetTxState != null;
+    }
+
+    public String getSecondaryArcnetTxState() {
+        return secondaryArcnetTxState;
+    }
+
+    public void setSecondaryArcnetTxState(String secondaryArcnetTxState) {
+        this.secondaryArcnetTxState = secondaryArcnetTxState;
+    }
+
+    public String getSwitches() {
         return switches;
     }
 
-    public void setSwitches(int switches) {
+    public void setSwitches(String switches) {
         this.switches = switches;
-        switchesSet = true;
     }
 
     public boolean hasSwitches() {
-        return switchesSet;
+        return switches != null;
     }
 
     public DownloadInfo getDownloadInfo() {
@@ -398,4 +460,53 @@ public class Modstat {
     public void setCmNet(boolean cmNet) {
         this.cmNet = cmNet;
     }
+
+    public boolean hasFlowSensorCalibration() {
+        return flowSensorCalibration != null;
+    }
+
+    public String getFlowSensorCalibration() {
+        return flowSensorCalibration;
+    }
+
+    public void setFlowSensorCalibration(String flowSensorCalibration) {
+        this.flowSensorCalibration = flowSensorCalibration;
+    }
+
+    public boolean hasZasfStatus() {
+        return zasfStatus != null;
+    }
+
+    public String getZasfStatus() {
+        return zasfStatus;
+    }
+
+    public void setZasfStatus(String zasfStatus) {
+        this.zasfStatus = zasfStatus;
+    }
+
+    public boolean hasRoutesUsed() {
+        return (routesUsed != -1);
+    }
+
+    public int getRoutesUsed() {
+        return routesUsed;
+    }
+
+    public void setRoutesUsed(int routesUsed) {
+        this.routesUsed = routesUsed;
+    }
+
+    public boolean hasRoutesMax() {
+        return routesMax != -1;
+    }
+
+    public int getRoutesMax() {
+        return routesMax;
+    }
+
+    public void setRoutesMax(int routesMax) {
+        this.routesMax = routesMax;
+    }
+
 }
