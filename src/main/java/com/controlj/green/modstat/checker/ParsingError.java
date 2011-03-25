@@ -26,6 +26,7 @@ import com.controlj.green.addonsupport.access.Location;
 import com.controlj.green.addonsupport.access.SystemAccess;
 import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.checks.ReportRow;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,12 @@ public class ParsingError extends BaseChecker {
         name = "Parsing Error";
         description = "Modstats with information that could not be parsed.  Please report on alcshare.com.";
         setEnabled(false);
+    }
+
+    @NotNull
+    @Override
+    public String getConfigHTML() {
+        return "Please run occasionally to help find problems with this tool.<br/>Report issues at ALCshare.com.";
     }
 
     @Override
