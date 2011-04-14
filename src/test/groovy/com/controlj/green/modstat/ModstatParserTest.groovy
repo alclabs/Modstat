@@ -411,10 +411,10 @@ MXM:  CM 15 ($0f)      Time: 09:50:01 Thursday Sep-16-2010
         m.hasBaseHardwareInfo()
         info.type == 0
         info.board == 1
-        info.manufactureDate = new Date(100, 8, 28)
+        info.manufactureDate == new Date(100, 8, 28)
         info.serialNumber == 'CR6090003T'
-        info.kRam = 2048
-        info.kFlash = 1024
+        info.kRam == 2048
+        info.kFlash == 1024
         info.flashType == 1
 
         baseInfo.type == 93

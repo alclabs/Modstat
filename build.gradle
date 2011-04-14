@@ -14,7 +14,7 @@ dependencies {
 
     groovy      'org.codehaus.groovy:groovy-all:1.7.4'
 
-    testCompile 'org.spockframework:spock-core:0.4-groovy-1.7'
+    testCompile 'org.spockframework:spock-core:0.5-groovy-1.7'
     testCompile 'junit:junit:4.8.1'
     testCompile 'cglib:cglib-nodep:2.2'
 
