@@ -2,9 +2,15 @@
 // and then apply it.
 configurations { gradleScript }
 repositories { mavenRepo urls: 'http://repo.alcshare.com' }
-dependencies { gradleScript group: 'com.alcshare', name: 'alclabs-gradle', ext: 'gradle', version: '1.0.2' }
+dependencies { gradleScript group: 'com.alcshare', name: 'alclabs-gradle', ext: 'gradle', version: '1.0.5' }
 apply from: configurations.gradleScript.resolve().iterator().next()
 
+info {
+  name = 'Modstat'
+  description = 'Gather, parse, and find errors in module status reports'
+  version = '0.9.1'
+  vendor = 'ALC Labs'
+}
 version = '0.9.1'
 
 dependencies {
@@ -30,4 +36,4 @@ configurations {
     testCompile.extendsFrom groovy
 }
 
-deploy.dependsOn cleanDeploy 
+deploy.dependsOn cleanDeploy
