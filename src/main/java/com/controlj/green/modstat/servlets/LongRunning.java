@@ -52,7 +52,7 @@ public class LongRunning extends HttpServlet {
     private static final String PROCESS_TIMER = "timer";
     private static final String PROCESS_MODSTAT = "modstat";
 
-    private boolean test = false;
+    private boolean test = true;
 
     private static final String ATTRIB_WORK = "work";
 

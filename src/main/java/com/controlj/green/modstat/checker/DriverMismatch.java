@@ -40,8 +40,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class DriverMismatch extends BaseChecker {
-    static private Pattern dbPattern = Pattern.compile("(\\d+)\\-(\\d+)\\-(\\d+)");
-    static private Pattern fieldPattern = Pattern.compile("(\\d+)\\.(\\d+):(\\d+)");
+    static private Pattern dbPattern = Pattern.compile("([^\\-]+)\\-([^\\-]+)\\-(.+)");
+    static private Pattern fieldPattern = Pattern.compile("([^\\.]+)\\.([^:]+):(.+)");
 
     public DriverMismatch(String id) {
         super(id);
@@ -65,28 +65,14 @@ public class DriverMismatch extends BaseChecker {
                     // in form of 4-02-094
                     String fieldVersion = version.getVersion();
                     // in form of 4-02:094
-
-                    int dba, dbb, dbc;
-                    int fa, fb, fc;
-
-                    Matcher dbMatcher = dbPattern.matcher(dbVersion);
-                    Matcher fieldMatcher = fieldPattern.matcher(fieldVersion);
-                    if (dbMatcher.matches() && fieldMatcher.matches()) {
-                        dba = Integer.parseInt(dbMatcher.group(1));
-                        dbb = Integer.parseInt(dbMatcher.group(2));
-                        dbc = Integer.parseInt(dbMatcher.group(3));
-
-                        fa = Integer.parseInt(fieldMatcher.group(1));
-                        fb = Integer.parseInt(fieldMatcher.group(2));
-                        fc = Integer.parseInt(fieldMatcher.group(3));
-
-                        if ((dba != fa) || (dbb != fb) || (dbc != fc)) {
+                    try {
+                        if (!versionsMatch(dbVersion, fieldVersion)) {
                             result = new ArrayList<ReportRow>();
                             result.add(ReportRow.error("Version of driver in database ("+dbVersion+") " +
                                     "is not the same as reported in Modstat ("+ fieldVersion+")"));
-
                         }
-                    } else {
+                    } catch (IllegalArgumentException ex)
+                    {
                         result = new ArrayList<ReportRow>();
                         result.add(ReportRow.error("Can't parse driver version.  db:"+dbVersion+" field:"+fieldVersion));
                     }
@@ -97,6 +83,20 @@ public class DriverMismatch extends BaseChecker {
             }
         }
         return result;
+    }
+
+    private static boolean versionsMatch(String dbVersion, String fieldVersion) throws IllegalArgumentException {
+        Matcher dbMatcher = dbPattern.matcher(dbVersion);
+        Matcher fieldMatcher = fieldPattern.matcher(fieldVersion);
+        if (dbMatcher.matches() && fieldMatcher.matches()) {
+            return dbMatcher.group(1).equals(fieldMatcher.group(1)) &&
+                    dbMatcher.group(2).equals(fieldMatcher.group(2)) &&
+                    dbMatcher.group(3).equals(fieldMatcher.group(3));
+        } else {
+            throw new IllegalArgumentException("Either the database driver version \""+dbVersion+"\" or the field driver version \""+fieldVersion+"\" are not parsable.");
+        }
+
+
     }
 
     public static @Nullable FirmwareVersion getNonBootDriver(List<FirmwareVersion> versions) {
