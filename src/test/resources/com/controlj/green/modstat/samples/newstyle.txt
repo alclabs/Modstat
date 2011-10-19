@@ -62,6 +62,10 @@ Flash storage size = 7061504
 
 Raw physical switches: 0x02488000
 
+BACnet Port:
+  Protocol=BACnet/ARC156
+  Baud Rate=156000 bps
+
 Integrated flow sensor calibration:
  00:-2067 10:5273
 ZASF status: offline
@@ -92,7 +96,7 @@ Ethernet statistics:
   Tx no chip memory C      = 0
   Tx chip memory now ready = 0
   Rx smaller than 64 bytes = 0
-  Rx larger than 1518 bytes= 0
+  Rx larger than 1518 bytes= 7
   Rx no buffer errors      = 0
   Rx alignment errors      = 0
   Rx CRC errors            = 0

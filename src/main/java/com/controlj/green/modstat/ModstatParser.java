@@ -160,6 +160,7 @@ public class ModstatParser {
         sections.add(new DatabaseSection(source, modstat));
         sections.add(new FlashStorageSection(source, modstat));
         sections.add(new SwitchesSection(source, modstat));
+        sections.add(new BACnetPortSection(source, modstat));
         sections.add(new FlowSensorSection(source, modstat));
         sections.add(new NetworkInformationSection(source, modstat));
         sections.add(new EthernetSection(source, modstat));

@@ -61,7 +61,7 @@ public class Modstat {
     private FlashStorage flashStorage;
     private String flowSensorCalibration;
     private String zasfStatus;
-
+    private Map<String,String> bacnetPort = new HashMap<String, String>();
 
     public interface ResetCount {
         public static final String POWER_FAILURES = "Power failures";
@@ -125,6 +125,11 @@ public class Modstat {
         public static final String EXCESSIVE_NAKS           = "ExcessiveNaks";
         public static final String RECONFIGS                = "Reconfigs";
         public static final String RECONFIGS_THIS_NODE      = "ReconfigsThisNode";        
+    }
+
+    public interface BACnetPort {
+        public static final String PROTOCOL  = "Protocol";
+        public static final String BAUD_RATE = "Baud Rate";
     }
 
     public void addUnparsedLine(String line) {
@@ -509,4 +514,11 @@ public class Modstat {
         this.routesMax = routesMax;
     }
 
+    public Map<String, String> getBacnetPort() {
+        return bacnetPort;
+    }
+
+    public boolean hasBacnetPort() {
+        return !bacnetPort.isEmpty();
+    }
 }

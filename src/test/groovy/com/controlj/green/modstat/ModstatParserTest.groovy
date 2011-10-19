@@ -557,6 +557,7 @@ MXM:  CM 15 ($0f)      Time: 09:50:01 Thursday Sep-16-2010
         info[Modstat.EthernetStats.TX_DEFERRED_B]      == 2
         info[Modstat.EthernetStats.RX_DRIBBLE_ERRORS]  == 3
         info[Modstat.EthernetStats.RX_RECEPTION_MISSED]== 206
+        info[Modstat.EthernetStats.RX_TOO_BIG]         == 7
     }
 
     def secondaryArcnetStats() {
@@ -589,6 +590,28 @@ MXM:  CM 15 ($0f)      Time: 09:50:01 Thursday Sep-16-2010
         info[Modstat.SecondaryArcnetStats.OVERRUN_ERRORS]   == 1
         info[Modstat.SecondaryArcnetStats.PARITY_ERRORS]    == 0
     }
+
+
+    def bacnetPort() {
+        setup:
+        ModstatParser parser = new ModstatParser()
+
+        Modstat m = parser.parse(newStyleIS)
+        //        BACnet Port:
+        //          Protocol=BACnet/ARC156
+        //          Baud Rate=156000 bps
+
+
+        when:
+        Map info = m.getBacnetPort()
+
+        then:
+        m.hasBacnetPort()
+        info[Modstat.BACnetPort.PROTOCOL]  == "BACnet/ARC156"
+        info[Modstat.BACnetPort.BAUD_RATE] == "156000 bps"
+        info.size() == 2
+    }
+
 
 
     def parsedAllNew() {
