@@ -2,16 +2,20 @@
 // and then apply it.
 configurations { gradleScript }
 repositories { mavenRepo url: 'http://repo.alcshare.com' }
-dependencies { gradleScript group: 'com.alcshare', name: 'alclabs-gradle', ext: 'gradle', version: '1.16' }
+dependencies { gradleScript group: 'com.alcshare', name: 'addon-gradle', ext: 'gradle', version: '1.1' }
 apply from: configurations.gradleScript.resolve().iterator().next()
+
+signAddon() // request for this add-on to be signed (so we can specify that no license requirements should be enforced)
 
 info {
   name = 'Modstat'
   description = 'Gather, parse, and find errors in module status reports'
   version = '0.9.3'
   vendor = 'ALC Labs'
+
+  // make this add-on function regardless of the license
+  licenseRequirements {}
 }
-version = '0.9.3'
 
 dependencies {
     compile 'commons-io:commons-io:1.4'
@@ -35,5 +39,3 @@ configurations {
     compile.extendsFrom = [ providedCompile ]
     testCompile.extendsFrom groovy
 }
-
-deploy.dependsOn cleanDeploy
