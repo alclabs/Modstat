@@ -22,7 +22,9 @@
 
 package com.controlj.green.modstat.checks;
 
+import com.controlj.green.addonsupport.AddOnInfo;
 import com.controlj.green.addonsupport.InvalidConnectionRequestException;
+import com.controlj.green.addonsupport.Version;
 import com.controlj.green.addonsupport.access.*;
 import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.ModstatParser;
@@ -36,6 +38,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -43,6 +46,11 @@ import java.util.zip.ZipInputStream;
 public class Report {
     private static final String ATTRIB_CHECKER = "checkers";
     private int modstatCounts = 0;
+    private Class[] checkerClasses;
+
+    public Report(Version apiVersion) {
+        checkerClasses = getCheckerClasses(apiVersion);
+    }
 
     public int getCount() {
         return modstatCounts;
@@ -112,7 +120,7 @@ public class Report {
     }
     */
     
-    private static ReportLocation runChecks(Checker[] checkers, ReportLocation reportLocation, Modstat modstat, SystemAccess access, Location location) {
+    private ReportLocation runChecks(Checker[] checkers, ReportLocation reportLocation, Modstat modstat, SystemAccess access, Location location) {
         ReportLocation result = null;
         for (Checker checker : checkers) {
             if (checker.isEnabled()) {
@@ -135,7 +143,7 @@ public class Report {
     }
 
 
-    public static Checker[] getCheckers(HttpServletRequest req) {
+    public Checker[] getCheckers(HttpServletRequest req) {
         Checker[] result = (Checker[]) req.getSession().getAttribute(ATTRIB_CHECKER);
         if (result == null) {
             result = newCheckers();
@@ -144,12 +152,11 @@ public class Report {
         return result;
     }
 
-    private static Checker[] newCheckers() {
-        Class classes[] = getCheckerClasses();
-        Checker[] result = new Checker[classes.length];
-        for (int i=0; i<classes.length; i++) {
+    private Checker[] newCheckers() {
+        Checker[] result = new Checker[checkerClasses.length];
+        for (int i=0; i<checkerClasses.length; i++) {
             try {
-                Constructor ctor = classes[i].getConstructor(String.class);
+                Constructor ctor = checkerClasses[i].getConstructor(String.class);
                 result[i] = (Checker) ctor.newInstance(Integer.toString(i));
             } catch (Exception e) {
                 throw new RuntimeException("Can't create checker class", e);
@@ -159,14 +166,45 @@ public class Report {
     }
 
 
-    private static Class[] getCheckerClasses() {
-        return checkerClasses;
+    private Class[] getCheckerClasses(Version apiVersion) {
+        List<Class> l = new ArrayList<Class>();
+        l.add(NoModstat.class);
+        l.add(NoDriver.class);
+        l.add(DeviceIDMismatch.class);
+        if (apiVersion.getMajorVersionNumber() >1 ||
+           (apiVersion.getMajorVersionNumber() == 1 && apiVersion.getMinorVersionNumber() >= 3))
+        {
+            l.add(AddressBinding.class);
+        }
+        l.add(DriverMismatch.class);
+        l.add(ArcnetReconfigCause.class);
+        l.add(ArcnetReconfig.class);
+        l.add(ErrorMessages.class);
+        l.add(WarningMessages.class);
+        l.add(ProgramsRunning.class);
+        l.add(DBFree.class);
+        l.add(HeapFree.class);
+        l.add(FlashStorageFree.class);
+        l.add(BACnetErrors.class);
+        l.add(Ethernet.class);
+        l.add(NoPrograms.class);
+        l.add(ErrorCount.class);
+        l.add(WatchdogTimeouts.class);
+        l.add(ParsingError.class);
+
+        Class[] classes = new Class[l.size()];
+        classes = l.toArray(classes);
+
+        return classes;
     }
 
-    private static Class[] checkerClasses = new Class[] {
+
+    /*new Class[] {
         NoModstat.class,
         NoDriver.class,
         DeviceIDMismatch.class,
+
+        AddressBinding.class,
         DriverMismatch.class,
         ArcnetReconfigCause.class,
         ArcnetReconfig.class,
@@ -183,4 +221,5 @@ public class Report {
         WatchdogTimeouts.class,
         ParsingError.class
     };
+    */
 }

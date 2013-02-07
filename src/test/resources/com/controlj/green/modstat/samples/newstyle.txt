@@ -1,3 +1,4 @@
+ADDRESS BINDING Used: device instance 488001 is on network 0 mac 172.31.217.213:0xbac0
 09/16/2010  09:47:44         CM: 1
 
 Device Instance: 0300201
@@ -14,7 +15,7 @@ Module status:
 Firmware sections validated in flash memory
 ============================================
   Boot16-E         - v4.03:001   Jun 15 2009
-  LGRME2M DRIVER   - v4.01:296   Sep  7 2010
+  LGRME2M DRIVER   - v4.02b:013   Sep  7 2010
 
 Reset counters:
     18 Power failures

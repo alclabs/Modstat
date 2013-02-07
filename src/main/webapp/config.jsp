@@ -1,5 +1,6 @@
 <%@ page import="com.controlj.green.modstat.checks.Report" %>
 <%@ page import="com.controlj.green.modstat.checks.Checker" %>
+<%@ page import="com.controlj.green.addonsupport.AddOnInfo" %>
 <%--
 ~ Copyright (c) 2011 Automated Logic Corporation
 ~
@@ -23,7 +24,8 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%
-    Checker[] checkers = Report.getCheckers(request);
+    Report report = new Report(AddOnInfo.getAddOnInfo().getApiVersion());
+    Checker[] checkers = report.getCheckers(request);
 %>
 <style type="text/css">
     .enable { width: 2em; }

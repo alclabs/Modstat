@@ -52,7 +52,7 @@ public class LongRunning extends HttpServlet {
     private static final String PROCESS_TIMER = "timer";
     private static final String PROCESS_MODSTAT = "modstat";
 
-    private boolean test = true;
+    private boolean test = false;
 
     private static final String ATTRIB_WORK = "work";
 
@@ -64,7 +64,9 @@ public class LongRunning extends HttpServlet {
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         sc = config.getServletContext();
-        test = getFileInWebApp(TEST_SOURCE).exists();
+        if (test) {
+            test = getFileInWebApp(TEST_SOURCE).exists();
+        }
     }
 
     private File getFileInWebApp(String path) {

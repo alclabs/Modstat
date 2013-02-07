@@ -54,6 +54,26 @@ MXM:  CM 15 ($0f)      Time: 09:50:01 Thursday Sep-16-2010
         m.isErrorReading()
     }
 
+    def addressBinding() {
+        setup:
+        ModstatParser parser = new ModstatParser()
+
+        when:   // missing
+        Modstat m = parser.parse(new StringReader("09/07/2010  21:46:11         CM: 1\n"))
+
+        then:
+        !m.hasAddressBinding()
+
+        when:   // normal
+        m = parser.parse(new StringReader("ADDRESS BINDING Used: device instance 488001 is on network 48803 mac 172.31.217.213:0xbac0\n"))
+
+        then:
+        m.hasAddressBinding()
+        m.addressBinding.instance == 488001
+        m.addressBinding.network == 48803
+        m.addressBinding.mac == "172.31.217.213:0xbac0"
+    }
+
     def captureTime() {
         setup:
         ModstatParser parser = new ModstatParser()
@@ -247,7 +267,7 @@ MXM:  CM 15 ($0f)      Time: 09:50:01 Thursday Sep-16-2010
         sections[0].version     == "4.03:001"
         sections[0].dateString  == "Jun 15 2009"
         sections[1].name        == "LGRME2M DRIVER"
-        sections[1].version     == "4.01:296"
+        sections[1].version     == "4.02b:013"
         sections[1].dateString  == "Sep  7 2010"
     }
 

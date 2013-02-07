@@ -28,6 +28,7 @@ public class Modstat {
     private List<String> unparsedLines = new ArrayList<String>();
     private boolean errorReading = false;
     private boolean cmNet = false;
+    private AddressBinding addressBinding;
     private Date captureTime;
     private Date flashArchiveTime;
     private String flashArchiveStatus;
@@ -138,6 +139,18 @@ public class Modstat {
 
     public List<String> getUnparsedLines() {
         return unparsedLines;
+    }
+
+    public void setAddressBinding(AddressBinding addressBinding) {
+        this.addressBinding = addressBinding;
+    }
+
+    public boolean hasAddressBinding() {
+        return addressBinding != null;
+    }
+
+    public AddressBinding getAddressBinding() {
+        return addressBinding;
     }
 
     public Date getCaptureTime() {

@@ -34,7 +34,7 @@ import java.util.List;
 public interface Checker {
     static final String FIELD_ENABLE = "enable";
 
-    List<ReportRow> check(Modstat modstat, SystemAccess access, Location location);
+    List<ReportRow>     check(Modstat modstat, SystemAccess access, Location location);
     @NotNull String getId();
     @NotNull String getFieldId(String fieldName) throws InvalidFieldNameException;
     void setFieldValue(String fieldName, String value) throws InvalidFieldValueException, InvalidFieldNameException;

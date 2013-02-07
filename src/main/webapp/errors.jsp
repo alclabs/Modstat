@@ -4,6 +4,7 @@
 <%@ page import="com.controlj.green.modstat.checks.ReportRow" %>
 <%@ page import="java.net.URLEncoder" %>
 <%@ page import="java.util.Date" %>
+<%@ page import="com.controlj.green.addonsupport.AddOnInfo" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
@@ -30,7 +31,7 @@
   --%>
 
 <%
-  Report report = new Report();
+  Report report = new Report(AddOnInfo.getAddOnInfo().getApiVersion());
   List<ReportLocation> locations = report.runReport(request);
 %>
 <style type="text/css">

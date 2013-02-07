@@ -30,8 +30,19 @@ import com.controlj.green.modstat.checks.Report
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 import com.controlj.green.modstat.checker.ArcnetReconfig
+import com.controlj.green.addonsupport.Version
 
 class SaveConfigServletTest extends Specification {
+    Version version = Mock();
+    Report report;
+
+
+    def setup() {
+        version.getMajorVersionNumber() >> 1
+        version.getMinorVersionNumber() >> 3
+        0 * version._
+        report = new Report(version)
+    }
 
     def getIndex() {
         setup:
@@ -77,7 +88,7 @@ class SaveConfigServletTest extends Specification {
     def doGet() {
         setup:
         SaveConfigServlet servlet = new SaveConfigServlet()
-        Checker[] checkers = Report.newCheckers()
+        Checker[] checkers = report.newCheckers()
         HttpSession mSession = Mock()
         mSession.getAttribute(Report.ATTRIB_CHECKER) >> checkers
         HttpServletRequest req = Mock()
@@ -86,7 +97,7 @@ class SaveConfigServletTest extends Specification {
 
         when:
         req.getParameterMap() >> ["0:enable":(String[])["true"], "1:enable":(String[])["false"]]
-        servlet.doGet(req, resp)
+        servlet.execute(req, resp, report)
 
         then:
         checkers[0].enabled == true
@@ -100,18 +111,20 @@ class SaveConfigServletTest extends Specification {
 
         // check default state
         when:
-        checkers = Report.newCheckers()
+        checkers = report.newCheckers()
+
         then:
         checkers[0].enabled == true
         checkers[1].enabled == true
         checkers[2].enabled == true
         checkers[3].enabled == true
         checkers[4].enabled == true
-        checkers[5].enabled == false
+        checkers[5].enabled == true
+        checkers[6].enabled == false
 
         // normal
         when:
-        checkers = Report.newCheckers()
+        checkers = report.newCheckers()
         servlet.processParameters( ["0:enable":(String[])["true"], "1:enable":(String[])["false"], "2:enable":(String[])["false"]], checkers)
         then:
         checkers[0].enabled == true
@@ -120,7 +133,7 @@ class SaveConfigServletTest extends Specification {
 
         // error in the middle, just skip
         when:
-        checkers = Report.newCheckers()
+        checkers = report.newCheckers()
         servlet.processParameters( ["0:enable":(String[])["true"], "1:enable":(String[])["fred"], "2:enable":(String[])["false"]], checkers)
         then:
         checkers[0].enabled == true
@@ -129,11 +142,11 @@ class SaveConfigServletTest extends Specification {
 
         // Int parameter
         when:
-        checkers = Report.newCheckers()
+        checkers = report.newCheckers()
         servlet.processParameters( ["0:enable":(String[])["true"], "1:enable":(String[])["false"],
                 "2:enable":(String[])["false"], ("9:"+ArcnetReconfig.FIELD_WARN_LIMIT) :(String[])["42"]], checkers)
         then:
-        checkers[5].name == "Arcnet Reconfigs"
+        checkers[5].name == "Cause of Arcnet Reconfigs"
         checkers[5].warningLimit == 1
     }
 }

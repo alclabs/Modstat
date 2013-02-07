@@ -33,6 +33,7 @@ import java.util.ListIterator;
 
 /*
         Sections - in order?
+ADDRESS BINDING Used: device instance 488001 is on network 0 mac 172.31.217.213:0xbac0
 09/07/2010  21:46:11         CM: 3
 
 Device Instance: 0300303
@@ -137,6 +138,7 @@ public class ModstatParser {
 
         List<ModstatSection> sections = new LinkedList<ModstatSection>();
 
+        sections.add(new AddressBindingSection(source, modstat));
         sections.add(new CMnetSection(source, modstat));
         sections.add(new ErrorSection(source, modstat));
         sections.add(new TimeSection(source, modstat));

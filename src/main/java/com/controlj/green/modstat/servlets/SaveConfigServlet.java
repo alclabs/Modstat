@@ -22,6 +22,7 @@
 
 package com.controlj.green.modstat.servlets;
 
+import com.controlj.green.addonsupport.AddOnInfo;
 import com.controlj.green.modstat.checker.InvalidFieldNameException;
 import com.controlj.green.modstat.checker.InvalidFieldValueException;
 import com.controlj.green.modstat.checks.Checker;
@@ -40,7 +41,12 @@ import java.util.Map;
 public class SaveConfigServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Checker[] checkers = Report.getCheckers(req);
+        Report report = new Report(AddOnInfo.getAddOnInfo().getApiVersion());
+        execute(req, resp, report);
+    }
+
+    private void execute(HttpServletRequest req, HttpServletResponse resp, Report report) throws ServletException, IOException {
+        Checker[] checkers = report.getCheckers(req);
         Map<String, String[]> map = req.getParameterMap();
         processParameters(map, checkers);
     }
