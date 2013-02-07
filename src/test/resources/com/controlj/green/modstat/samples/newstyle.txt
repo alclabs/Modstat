@@ -27,6 +27,7 @@ Reset counters:
      0 CPU clock failures
 
 System error message history:                                   Type   Specific
+  EEPROM2: Read error at address 0x00       08/23/10 22:44:59 00014001 00000000
 Warning message history:
 Information message history:
   Clock changed from 09/15/10 13:59:17 to   09/15/10 13:58:39
@@ -39,6 +40,10 @@ Information message history:
   MAIN FIRMWARE ERASED ON COMMAND!          09/15/10 13:58:16
   Module formatted. PRG database cleared.   09/15/10 13:58:01
   FLASH: Programmed 63676 bytes at 0x0      09/15/10 13:57:55
+
+Diagnostic message history:                                     Type   Specific
+I FLASH: Programmed 63676 bytes at 0x0      09/15/10 13:57:55
+E EEPROM2: Read error at address 0x00       08/23/10 22:44:59 00014001 00000000
 
 ARC156 reconfigurations during the last hour (cleared upon reset):
   Total ....................... 0

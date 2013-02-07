@@ -10,7 +10,7 @@ signAddon() // request for this add-on to be signed (so we can specify that no l
 info {
   name = 'Modstat'
   description = 'Gather, parse, and find errors in module status reports'
-  version = '0.9.3'
+  version = '1.0.0'
   vendor = 'ALC Labs'
 
   // make this add-on function regardless of the license

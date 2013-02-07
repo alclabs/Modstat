@@ -56,6 +56,7 @@ public class Modstat {
     private String secondaryArcnetTxState;
     private List<Message> errorMessages = new ArrayList<Message>();
     private List<Message> warningMessages = new ArrayList<Message>();
+    private List<Message> diagMessages = new ArrayList<Message>();
     private List<Message> infoMessages = new ArrayList<Message>();
     private HardwareInfo coreHardwareInfo;  // also main board
     private HardwareInfo baseHardwareInfo;
@@ -269,6 +270,14 @@ public class Modstat {
 
     public boolean hasInfoMessages() {
         return !infoMessages.isEmpty();
+    }
+
+    public List<Message> getDiagMessages() {
+        return diagMessages;
+    }
+
+    public boolean hasDiagMessages() {
+        return !diagMessages.isEmpty();
     }
 
     public Map<String, Long> getArcnetReconfigs() {

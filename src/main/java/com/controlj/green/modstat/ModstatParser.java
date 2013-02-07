@@ -152,6 +152,7 @@ public class ModstatParser {
         sections.add(new ErrorMessageSection(source, modstat));
         sections.add(new WarningMessageSection(source, modstat));
         sections.add(new InfoMessageSection(source, modstat));
+        sections.add(new DiagMessageSection(source, modstat));
         sections.add(new ArcnetReconfigSection(source, modstat));
         sections.add(new Arcnet2ReconfigSection(source, modstat));
         sections.add(new BACnetErrorSection(source, modstat));

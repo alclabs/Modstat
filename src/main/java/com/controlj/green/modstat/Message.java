@@ -34,8 +34,9 @@ import java.util.regex.Pattern;
 public class Message {
     //  Main firmware not found at startup.       08/24/10 08:22:47
     //  Brownout protection activated.            --/--/-- --:--:--
+    //I FLASH: Programmed 63676 bytes at 0x0      09/15/10 13:57:55
     private static final Matcher matcher =
-            Pattern.compile("\\s\\s(.{1,41})\\s+([-\\d]{2}/[-\\d]{2}/[-\\d]{2})\\s([-\\d]{2}:[-\\d]{2}:[-\\d]{2})").matcher("");
+            Pattern.compile("\\s{0,2}(.{1,41})\\s+([-\\d]{2}/[-\\d]{2}/[-\\d]{2})\\s([-\\d]{2}:[-\\d]{2}:[-\\d]{2})").matcher("");
 
     private static final SimpleDateFormat dateTimeFormat = new SimpleDateFormat("MM/dd/yy HH:mm:ss");
 

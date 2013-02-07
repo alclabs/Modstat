@@ -45,7 +45,8 @@ public class DeviceIDMismatch extends BaseChecker {
     public List<ReportRow> check(Modstat modstat, SystemAccess access, Location location) {
         List<ReportRow> result = null;
 
-        if (modstat.hasDeviceID()) {
+        // Note that the Hybrid router (frankenrouter) modstat has a device ID, but it is a CHWRD node type.  Can't do check here
+        if (modstat.hasDeviceID() && location.hasAspect(BACnetObjectSource.class)) {
             int fieldInstance = modstat.getDeviceInstance();
             try {
                 BACnetObjectSource objectSource = location.getAspect(BACnetObjectSource.class);

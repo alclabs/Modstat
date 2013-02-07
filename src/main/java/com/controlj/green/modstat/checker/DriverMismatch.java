@@ -42,6 +42,7 @@ import java.util.regex.Pattern;
 public class DriverMismatch extends BaseChecker {
     static private Pattern dbPattern = Pattern.compile("([^\\-]+)\\-([^\\-]+)\\-(.+)");
     static private Pattern fieldPattern = Pattern.compile("([^\\.]+)\\.([^:]+):(.+)");
+    private static final String HYBRID_ROUTER_DRIVER = "hem";
 
     public DriverMismatch(String id) {
         super(id);
@@ -61,20 +62,24 @@ public class DriverMismatch extends BaseChecker {
             if (version != null) {
                 try {
                     Driver driver = location.getAspect(Driver.class);
-                    String dbVersion = driver.getVersion();
-                    // in form of 4-02-094
-                    String fieldVersion = version.getVersion();
-                    // in form of 4-02:094
-                    try {
-                        if (!versionsMatch(dbVersion, fieldVersion)) {
-                            result = new ArrayList<ReportRow>();
-                            result.add(ReportRow.error("Version of driver in database ("+dbVersion+") " +
-                                    "is not the same as reported in Modstat ("+ fieldVersion+")"));
-                        }
-                    } catch (IllegalArgumentException ex)
+
+                    if (driver.getName() != HYBRID_ROUTER_DRIVER)   // hybrid router DB driver version in meaningless and will never match
                     {
-                        result = new ArrayList<ReportRow>();
-                        result.add(ReportRow.error("Can't parse driver version.  db:"+dbVersion+" field:"+fieldVersion));
+                        String dbVersion = driver.getVersion();
+                        // in form of 4-02-094
+                        String fieldVersion = version.getVersion();
+                        // in form of 4-02:094
+                        try {
+                            if (!versionsMatch(dbVersion, fieldVersion)) {
+                                result = new ArrayList<ReportRow>();
+                                result.add(ReportRow.error("Version of driver in database ("+dbVersion+") " +
+                                        "is not the same as reported in Modstat ("+ fieldVersion+")"));
+                            }
+                        } catch (IllegalArgumentException ex)
+                        {
+                            result = new ArrayList<ReportRow>();
+                            result.add(ReportRow.error("Can't parse driver version.  db:"+dbVersion+" field:"+fieldVersion));
+                        }
                     }
                 } catch (NoSuchAspectException e) {
                     result = new ArrayList<ReportRow>();
