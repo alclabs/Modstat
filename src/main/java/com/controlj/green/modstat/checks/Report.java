@@ -191,6 +191,7 @@ public class Report {
         l.add(ErrorCount.class);
         l.add(WatchdogTimeouts.class);
         l.add(ParsingError.class);
+        l.add(MEBadCapSerial.class);
 
         Class[] classes = new Class[l.size()];
         classes = l.toArray(classes);
