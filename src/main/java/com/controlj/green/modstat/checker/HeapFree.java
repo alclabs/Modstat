@@ -64,7 +64,7 @@ public class HeapFree extends BaseChecker{
     @NotNull
     @Override
     public String getConfigHTML() {
-        return "Warning if less than " + getNumberInputHTML(FIELD_WARN_LIMIT, "size=\"4\"")+
+        return "Warning if less than " + getTextInputHTML(FIELD_WARN_LIMIT, "size=\"4\"")+
                 "k bytes of memory are free.";
     }
 

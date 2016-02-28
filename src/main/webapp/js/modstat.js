@@ -37,13 +37,13 @@ Modstat =
             $('#progtext').text(data.error)
         }
         else if (data.stopped) {
-            Modstat.showTabs()
+            Modstat.showTabs();
             $('#progtext').html("<a href=\"servlets/zip\">Download Modstat Zip</a>")
         } else {
             var numComplete = data.percent;
             if (numComplete != undefined) {
                 $('#progtext').text(numComplete+"% complete");
-                Modstat.getStatus() // kick off another check
+                Modstat.getStatus(); // kick off another check
             }
         }
     },
@@ -55,16 +55,33 @@ Modstat =
     },
 
     treNavigated : function() {
-        $('#progtext').hide()
-        $('#gatherbutton').show()
+        $('#progtext').hide();
+        $('#gatherbutton').show();
+        $("#devices").show();
         $('#tabs:visible').hide("blind", {}, 300)
     },
 
     showTabs : function() {
-        $('#tabs').tabs('load', 1).show("blind", {}, 300)
+        $('#tabs').tabs('load', 1).show("blind", {}, 300);
         $('#gatherbutton').hide()
+    },
+
+    setDevices : function(devices) {
+        var $devices = $("#devices");
+        for (var device in devices) {
+            $devices.append('<div><input type="checkbox" checked="true" name="'+devices[device]+'"/>'+devices[device]+'</div>\n');
+        }
+    },
+
+    getDevices : function() {
+        var checkedDevices = $("#devices input:checked");
+        var result = [];
+        checkedDevices.each(function(x) {
+            result.push($(this).attr('name'));
+        });
+        return result;
     }
-}
+};
 
 
 
@@ -97,28 +114,32 @@ $(function(){
         cache: false
     });
 
-
+    $.ajax({ url: 'servlets/modulelist',
+             success: function(devices) {Modstat.setDevices(devices)}});
 
     $('#gatherbutton').button().bind('click', function() {
-        $('#progtext').text("0% complete");
-        $('#progtext').show()
+        $('#devices').hide();
+        $('#progtext').text("0% complete").show();
+        var activeDevices = Modstat.getDevices();
 
-        var id = ''
-        var node = $('#tree').dynatree('getActiveNode')
+        var id = '';
+        var node = $('#tree').dynatree('getActiveNode');
         if (node) {
             id = node.data.key
         }
         $.ajax({url:'servlets/longrunning',
                 data: {'id':id,
                        action: 'start',
-                       process: 'modstat'},
+                       process: 'modstat',
+                       devices: JSON.stringify(activeDevices)
+                },
                 success: function() { Modstat.startGatherResult() },
                 error: function() { Modstat.startGatherError() }})
-    })
+    });
 
     $("#test").bind('click', function() {
         Modstat.showTabs();
-    })
+    });
 
 
     $("#tabs").tabs({ load: function() {eval("initConfig()") } });

@@ -58,9 +58,18 @@ public class AddressBinding extends BaseChecker {
                 if (fieldAddress.contains(":")) {
                     fieldAddress = fieldAddress.substring(0,fieldAddress.indexOf(":"));
                 }
+
+                //need to check if field address is in hex and compare differently
+                // example: field:0xac1fde23bac2, sitebuilder:172.31.222.35:47810
+                if (fieldAddress.startsWith("0x")) {
+                    try {
+                        fieldAddress = fieldHexToStandard(fieldAddress);
+                    } catch (NumberFormatException e) {} // intentionally ignore. If number is not formatted as expected it will result in an error
+                }
+
                 if (!dbAddress.equals(fieldAddress)) {
-                    result.add(ReportRow.error("Address in the field device ("+fieldAddress+") does not match the value in SiteBuilder ("+
-                            dbAddress+")."));
+                    result.add(ReportRow.error("Address in the field device (" + fieldAddress + ") does not match the value in SiteBuilder (" +
+                            dbAddress + ")."));
                 }
             } catch (NoSuchAspectException e) {
                 result.add(ReportRow.error("Can't determine device address from database for device at: "+location.getDisplayPath() ));
@@ -68,5 +77,48 @@ public class AddressBinding extends BaseChecker {
 
         }
         return result;
+    }
+
+    private String fieldHexToStandard(String fieldValue) throws NumberFormatException {
+        if (!fieldValue.startsWith("0x") || fieldValue.length() != 14) {
+            throw new NumberFormatException(fieldValue+" is unexpected format");
+        }
+
+        StringBuilder result = new StringBuilder();
+        result.append(getIntegerByteFromHexString(fieldValue, 0));
+        result.append('.');
+        result.append(getIntegerByteFromHexString(fieldValue, 1));
+        result.append('.');
+        result.append(getIntegerByteFromHexString(fieldValue, 2));
+        result.append('.');
+        result.append(getIntegerByteFromHexString(fieldValue, 3));
+        result.append(":");
+
+        String porthex = fieldValue.substring(10);
+        Integer intPort = Integer.parseInt(porthex, 16);
+        result.append(intPort.toString());
+
+        return result.toString();
+    }
+
+
+
+    /**
+     * Pulls a 2 character "byte" from the hex address string and returns as an integer in string form
+     * @param input Input string - typically like "0xac1fde23bac2"
+     * @param index index of "byte" to extract.  Starts with 0
+     * @return Integer form of byte as a String
+     * @throws NumberFormatException - if the input string isn't as expected
+     */
+    private String getIntegerByteFromHexString(String input, int index) throws NumberFormatException {
+        int startIndex = (index * 2) + 2;
+        String hexByte;
+        try {
+            hexByte = input.substring(startIndex, startIndex+2);
+        } catch (IndexOutOfBoundsException e) {
+            throw new NumberFormatException("'"+input+"' is not in expected format");
+        }
+        Integer resultInt = Integer.parseInt(hexByte, 16);
+        return resultInt.toString();
     }
 }

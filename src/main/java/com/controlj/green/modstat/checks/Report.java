@@ -221,6 +221,7 @@ public class Report {
         ErrorCount.class,
         WatchdogTimeouts.class,
         ParsingError.class
+        MEBadCapSerial.class
     };
     */
 }

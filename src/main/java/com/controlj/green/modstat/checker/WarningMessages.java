@@ -27,17 +27,49 @@ import com.controlj.green.addonsupport.access.SystemAccess;
 import com.controlj.green.modstat.Message;
 import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.checks.ReportRow;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class WarningMessages extends BaseChecker {
+    public static final String FIELD_WARN_TEXT = "warn_text";
+
+    String warning_text = "";
+
     public WarningMessages(String id) {
         super(id);
         name = "Warning Messages";
-        description = "Display any warning messages";
+        description = "Search for warning messages";
         setEnabled(false);
+        fieldNames.addAll(Arrays.asList(FIELD_WARN_TEXT));
     }
+
+    @Override @NotNull
+    public String getFieldValue(String fieldName) throws InvalidFieldNameException {
+        if (FIELD_WARN_TEXT.equals(fieldName)) {
+            return warning_text;
+        }
+        return super.getFieldValue(fieldName);
+    }
+
+
+    @Override
+    public void setFieldValue(String fieldName, String value) throws InvalidFieldValueException, InvalidFieldNameException {
+        if (FIELD_WARN_TEXT.equals(fieldName)) {
+            warning_text = value;
+        } else {
+            super.setFieldValue(fieldName, value.trim());
+        }
+    }
+
+    @NotNull
+    @Override
+    public String getConfigHTML() {
+        return "Messages containing:" + getTextInputHTML(FIELD_WARN_TEXT, "size=\"80\"");
+    }
+
 
     @Override
     public List<ReportRow> check(Modstat modstat, SystemAccess access, Location location) {
@@ -48,7 +80,9 @@ public class WarningMessages extends BaseChecker {
             result = new ArrayList<ReportRow>();
 
             for (Message message : messages) {
-                result.add(ReportRow.warning("Warning message:'"+message+"'"));
+                if (warning_text.isEmpty() || message.getMessage().contains(warning_text)) {
+                    result.add(ReportRow.error("Warning message:'" + message + "'"));
+                }
             }
         }
         return result;

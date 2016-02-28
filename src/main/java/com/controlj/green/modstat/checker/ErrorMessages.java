@@ -27,15 +27,46 @@ import com.controlj.green.addonsupport.access.SystemAccess;
 import com.controlj.green.modstat.Message;
 import com.controlj.green.modstat.Modstat;
 import com.controlj.green.modstat.checks.ReportRow;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ErrorMessages extends BaseChecker {
+    public static final String FIELD_ERROR_TEXT = "error_text";
+
+    String error_text = "";
+
     public ErrorMessages(String id) {
         super(id);
         name = "Error Messages";
-        description = "Display any error messages";
+        description = "Search for error messages";
+        fieldNames.addAll(Arrays.asList(FIELD_ERROR_TEXT));
+    }
+
+    @Override @NotNull
+    public String getFieldValue(String fieldName) throws InvalidFieldNameException {
+        if (FIELD_ERROR_TEXT.equals(fieldName)) {
+            return error_text;
+        }
+        return super.getFieldValue(fieldName);
+    }
+
+
+    @Override
+    public void setFieldValue(String fieldName, String value) throws InvalidFieldValueException, InvalidFieldNameException {
+        if (FIELD_ERROR_TEXT.equals(fieldName)) {
+            error_text = value;
+        } else {
+            super.setFieldValue(fieldName, value.trim());
+        }
+    }
+
+    @NotNull
+    @Override
+    public String getConfigHTML() {
+        return "Messages containing:" + getTextInputHTML(FIELD_ERROR_TEXT, "size=\"80\"");
     }
 
     @Override
@@ -47,7 +78,9 @@ public class ErrorMessages extends BaseChecker {
             result = new ArrayList<ReportRow>();
 
             for (Message message : messages) {
-                result.add(ReportRow.error("Error message:'"+message+"'"));
+                if (error_text.isEmpty() || message.getMessage().contains(error_text)) {
+                    result.add(ReportRow.error("Error message:'" + message + "'"));
+                }
             }
         }
         return result;

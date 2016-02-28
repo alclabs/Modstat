@@ -31,6 +31,9 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.*;
 import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -42,10 +45,12 @@ public class ModstatWork extends Thread implements RunnableProgress {
     private final String rootPath;
     File resultFile = null;
     private byte[] cache = null;
+    private List<String> deviceNames = null;
 
-    public ModstatWork(SystemConnection connection, String rootPath) {
+    public ModstatWork(SystemConnection connection, String rootPath, List<String> deviceNames) {
         this.connection = connection;
         this.rootPath = rootPath;
+        this.deviceNames = deviceNames;
     }
 
     @Override
@@ -79,7 +84,7 @@ public class ModstatWork extends Thread implements RunnableProgress {
                 public void execute(@NotNull SystemAccess access) throws Exception {
                     Location root = access.getTree(SystemTree.Network).resolve(rootPath);
 
-                    Collection<ModuleStatus> aspects = root.find(ModuleStatus.class, Acceptors.acceptAll());
+                    Collection<ModuleStatus> aspects = root.find(ModuleStatus.class, new DeviceListAcceptor(new HashSet<String>(deviceNames)));
 
                     synchronized (this) {
                         progressLimit = aspects.size();
@@ -139,6 +144,29 @@ public class ModstatWork extends Thread implements RunnableProgress {
             }
         } catch (UnresolvableException e) {
             throw new RuntimeException("Couldn't resolve parent when it should exist.", e);
+        }
+    }
+
+    public static class DeviceListAcceptor implements AspectAcceptor<ModuleStatus> {
+        private Set<String> deviceNames;
+
+        public DeviceListAcceptor(Set<String> deviceNames) {
+            this.deviceNames = deviceNames;
+        }
+
+        @Override
+        public boolean accept(@NotNull ModuleStatus moduleStatus) {
+            Device device = null;
+            try {
+                device = moduleStatus.getLocation().getAspect(Device.class);
+                if (!device.isOutOfService()) {
+                    if (deviceNames.contains(device.getModelName())) {
+                        return true;
+                    }
+                }
+            } catch (NoSuchAspectException e) {} // intentionally fall through
+
+            return false;
         }
     }
 }

@@ -145,7 +145,7 @@ public abstract class BaseChecker implements Checker, Serializable {
         }
     }
 
-    protected String getNumberInputHTML(String fieldName, String extra) {
+    protected String getTextInputHTML(String fieldName, String extra) {
         try {
             return "<input type=\"text\" name=\""+getFieldId(fieldName)+"\" value=\"" +
                     getFieldValue(fieldName)+"\" "+ extra+ "/>";

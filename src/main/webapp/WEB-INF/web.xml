@@ -67,7 +67,17 @@
         <url-pattern>/servlets/treedata/*</url-pattern>
     </servlet-mapping>
 
-   <security-constraint>
+    <servlet>
+        <servlet-name>modulelist</servlet-name>
+        <servlet-class>com.controlj.green.modstat.servlets.ModuleListServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>modulelist</servlet-name>
+        <url-pattern>/servlets/modulelist</url-pattern>
+    </servlet-mapping>
+
+    <security-constraint>
       <web-resource-collection>
          <web-resource-name>WEB</web-resource-name>
          <url-pattern>/*</url-pattern>

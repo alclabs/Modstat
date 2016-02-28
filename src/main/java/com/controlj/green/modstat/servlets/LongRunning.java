@@ -29,6 +29,7 @@ import com.controlj.green.addonsupport.access.SystemConnection;
 import com.controlj.green.modstat.work.ModstatWork;
 import com.controlj.green.modstat.work.RunnableProgress;
 import com.controlj.green.modstat.work.TestWork;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -41,11 +42,14 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
 public class LongRunning extends HttpServlet {
     private static final String PARAM_ACTION = "action";
     private static final String PARAM_PROCESS = "process";
     private static final String PARAM_ID = "id";
+    private static final String PARAM_DEVICES = "devices";
 
     private static final String ACTION_START = "start";
     private static final String ACTION_STATUS = "status";
@@ -66,6 +70,9 @@ public class LongRunning extends HttpServlet {
         sc = config.getServletContext();
         if (test) {
             test = getFileInWebApp(TEST_SOURCE).exists();
+            if (!test) {
+                System.err.println("Couldn't find test modstat source");
+            }
         }
     }
 
@@ -104,6 +111,19 @@ public class LongRunning extends HttpServlet {
                         throw new ServletException("Missing parameter: id");
                     }
 
+                    String jsonDevices = req.getParameter(PARAM_DEVICES);
+                    List<String> deviceNames = new ArrayList<String>();
+
+                    JSONArray jsonArray = null;
+                    try {
+                        jsonArray = new JSONArray(jsonDevices);
+                        for (int i=0; i<jsonArray.length(); i++) {
+                            deviceNames.add(jsonArray.getString(i));
+                        }
+                    } catch (JSONException e) {
+                        throw new ServletException("Missing parameter: devices");
+                    }
+
                     SystemConnection connection = null;
                     try {
                         connection = DirectAccess.getDirectAccess().getUserSystemConnection(req);
@@ -114,7 +134,7 @@ public class LongRunning extends HttpServlet {
                     if (test) {
                         work = new TestWork(getFileInWebApp(TEST_SOURCE));
                     } else {
-                        work = new ModstatWork(connection, idString);
+                        work = new ModstatWork(connection, idString, deviceNames);
                     }
                     req.getSession().setAttribute(ATTRIB_WORK, work);
                     work.start();

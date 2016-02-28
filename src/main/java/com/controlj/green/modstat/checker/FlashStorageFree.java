@@ -67,7 +67,7 @@ public class FlashStorageFree extends BaseChecker {
     @NotNull
     @Override
     public String getConfigHTML() {
-        return "Warning if less than " + getNumberInputHTML(FIELD_WARN_LIMIT, "size=\"6\"")+
+        return "Warning if less than " + getTextInputHTML(FIELD_WARN_LIMIT, "size=\"6\"")+
                 " bytes of database space are available.";
     }
 

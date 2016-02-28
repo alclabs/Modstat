@@ -73,6 +73,34 @@ class AddressBindingTest extends Specification {
         result[0].message == "Address in the field device (172.31.217.213) does not match the value in SiteBuilder (172.31.212.213)."
     }
 
+    def "IP, Different Port, and matches"() {
+        setup:
+        deviceAspect.getMacAddressString() >> "172.31.222.35:47810"
+
+        when:
+        Modstat m = parser.parse(new StringReader("ADDRESS BINDING Used: device instance 488001 is on network 48803 mac 0xac1fde23bac2\n"))
+        def result = bindingCheck.check(m, access, location);
+
+        then:
+        result.size() == 0
+    }
+
+    def "IP, Different Port, and wrong"() {
+        setup:
+        0 * access._
+        location.getAspect(Device.class) >> deviceAspect
+        deviceAspect.getMacAddressString() >>  "172.31.222.35:47810"
+
+        when:
+        Modstat m = parser.parse(new StringReader("ADDRESS BINDING Used: device instance 488001 is on network 48803 mac 0xac1fde23bac3\n"))
+        def result = bindingCheck.check(m, access, location);
+
+
+        then:
+        result.size() == 1
+        result[0].message == "Address in the field device (172.31.222.35:47811) does not match the value in SiteBuilder (172.31.222.35:47810)."
+    }
+
     def "Arcnet and matches"() {
         setup:
         deviceAspect.getMacAddressString() >> "42"

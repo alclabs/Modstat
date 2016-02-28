@@ -15,13 +15,7 @@ import java.util.List;
  * Created by sappling on 2/27/2016.
  */
 public class MEBadCapSerial extends BaseChecker {
-    /*
-        PSI5*xxxxP
-        M8E5*xxxxP
-        M8U5*xxxxP
-        M8L5*xxxxP
-
-     */
+    // Exclusive limits of bad serial number ranges
     private static final String[][] limits = {
             {"IOU560000P", "IOU5B9999P"},
             {"ME8560000P", "ME85B9999P"},
@@ -35,8 +29,9 @@ public class MEBadCapSerial extends BaseChecker {
 
     public MEBadCapSerial(String id) {
         super(id);
-        name = "Bad Cap Serial Number";
-        description = "Lists modules with a serial number in the range that may have a faulty capacitor.";
+        name = "Power Supply Serial Number";
+        description = "Lists modules made in 2015 with a serial number in the range that may have a faulty power supply.";
+        setEnabled(false);  // default to disabled
     }
 
     @Override
