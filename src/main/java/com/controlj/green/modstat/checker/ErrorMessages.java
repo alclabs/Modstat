@@ -66,7 +66,7 @@ public class ErrorMessages extends BaseChecker {
     @NotNull
     @Override
     public String getConfigHTML() {
-        return "Messages containing:" + getTextInputHTML(FIELD_ERROR_TEXT, "size=\"80\"");
+        return "Messages containing: " + getTextInputHTML(FIELD_ERROR_TEXT, "size=\"80\"");
     }
 
     @Override

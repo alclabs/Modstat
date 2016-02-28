@@ -67,7 +67,7 @@ public class WarningMessages extends BaseChecker {
     @NotNull
     @Override
     public String getConfigHTML() {
-        return "Messages containing:" + getTextInputHTML(FIELD_WARN_TEXT, "size=\"80\"");
+        return "Messages containing: " + getTextInputHTML(FIELD_WARN_TEXT, "size=\"80\"");
     }
 
 
