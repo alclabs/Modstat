@@ -44,7 +44,7 @@ public class MEBadCapSerial extends BaseChecker {
 
             if (isInRange(serialNumber)) {
                 result = new ArrayList<ReportRow>();
-                result.add(ReportRow.error("Serial number '"+serialNumber+"' is in the range that might have a faulty capacitor.  Please contact tech support."));
+                result.add(ReportRow.error("Serial number '"+serialNumber+"' is in the range that may fail when exposed to elevated temperature.  Please contact tech support."));
             }
         }
         return result;
