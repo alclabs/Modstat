@@ -31,7 +31,7 @@
     .enable { width: 2em; }
     .name   {
         font-weight: bold;
-        width: 50px;
+        width: 16em;
         white-space:nowrap;
         padding-right:10px;
     }
