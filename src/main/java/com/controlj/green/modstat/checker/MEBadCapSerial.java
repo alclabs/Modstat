@@ -17,14 +17,14 @@ import java.util.List;
 public class MEBadCapSerial extends BaseChecker {
     // Exclusive limits of bad serial number ranges
     private static final String[][] limits = {
-            {"IOU560000P", "IOU5B9999P"},
-            {"ME8560000P", "ME85B9999P"},
-            {"M8L560000P", "M8L5B9999P"},
-            {"M8U560000P", "M8U5B9999P"},
-            {"O8E560000P", "O8E5B9999P"},
-            {"PSI560000P", "PSI5B9999P"},
-            {"PSO560000P", "PSO5B9999P"},
-            {"SIO560000P", "SIO5B9999P"}
+            {"IOU560000P", "IOU5A9999P"},
+            {"M8E560000P", "M8E5A9999P"},
+            {"M8L560000P", "M8L5A9999P"},
+            {"M8U560000P", "M8U5A9999P"},
+            {"O8E560000P", "O8E5A9999P"},
+            {"PSI560000P", "PSI5A9999P"},
+            {"PSO560000P", "PSO5A9999P"},
+            {"SIO560000P", "SIO5A9999P"}
     };
 
     public MEBadCapSerial(String id) {

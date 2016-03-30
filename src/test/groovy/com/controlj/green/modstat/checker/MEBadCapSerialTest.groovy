@@ -22,7 +22,7 @@ class MEBadCapSerialTest extends Specification {
     def "Test isInRange"() {
         expect:
         MEBadCapSerial.isInRange(test) == result
-        /*  Start of ranges.  They end at xxxxB9998P
+        /*  Start of ranges.  They end at xxxxA9998P
             "IOU560000P"
             "ME8560000P"
             "M8L560000P"
@@ -37,12 +37,13 @@ class MEBadCapSerialTest extends Specification {
         where:
         test         | result
         "IOU560001P" | true
-        "IOU5B9998P" | true
+        "IOU5B9998P" | false
+        "IOU5A9998P" | true
         "IOU5C0001P" | false
         "M8L560021P" | true
         "M8L550021P" | false
         "SIO5A0000P" | true
-        "SIO5B0123P" | true
+        "SIO5A0123P" | true
         "O8E564001P" | true
         "O8E540010P" | false
     }
